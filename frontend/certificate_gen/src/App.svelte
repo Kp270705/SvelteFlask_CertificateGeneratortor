@@ -1,51 +1,26 @@
 <script>
-  import { onMount } from "svelte";
+  import Navigation from "./Navigation.svelte";
+  import Landing from "./pages/Landing.svelte";
+  import Home from "./pages/Home.svelte";
+  import About from "./pages/About.svelte";
+  import Contact from "./pages/Contact.svelte";
 
-  let name = "Kunal";
-  let messages = {
-    hello: "",
-    testApi: "",
-    testApi2: ""
+  let current = "landing";
+
+  const pages = {
+    landing: Landing,
+    home: Home,
+    about: About,
+    contact: Contact
   };
-  const endpoints = [
-    { key: "hello", url: "http://localhost:5000/api/hello", field: "message" },
-    { key: "testApi", url: "http://localhost:5000/api/testApi", field: "test_message" },
-    { key: "testApi2", url: "http://localhost:5000/api/testApi2", field: "test_message2" }
-  ];
 
-  onMount(async () => {
-    await Promise.all(endpoints.map(async (ep) => {
-      const res = await fetch(ep.url);
-      const data = await res.json(); // data is json type, and it have a field with the name of ep.field.
-      console.log(data); // data is object type
-      messages[ep.key] = data[ep.field];
-    }));
-  });
-
-
-  async function sendName() {
-    const res = await fetch("http://localhost:5000/api/send", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ name })
-    });
-    const result = await res.json();
-    console.log("Response from backend:", result);
-    // console.log("Name: ", result.data.name);
+  function navigate(page) {
+    current = page;
+    console.log(`Navigating to ${page}`);
   }
 </script>
 
-<h1>Certificate Generator</h1>
+<Navigation {current} {navigate} />
 
-<hr>
-<p>{messages.hello}</p>
-<hr>
-<p>{messages.testApi}</p>
-<hr>
-<p>{messages.testApi2}</p>
-<hr>
-
-<input bind:value={name} placeholder="Enter your name" />
-<button on:click={sendName}>Send to backend</button>
+<!-- Pass navigate prop if current page is Landing -->
+<svelte:component this={pages[current]} navigate={navigate} />
