@@ -1,6 +1,7 @@
 <script>
     import certImg from "../assets/demoCert.png";
   export let navigate;
+  // console.log(`From Landing and navigate is: ${navigate}`);
 </script>
 
 <style>

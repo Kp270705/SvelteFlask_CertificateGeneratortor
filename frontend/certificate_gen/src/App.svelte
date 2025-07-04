@@ -20,7 +20,9 @@
   }
 </script>
 
+
+<!-- <h2 style="color: lightgreen;">I am h2 of App.svelte </h2> -->
 <Navigation {current} {navigate} />
 
 <!-- Pass navigate prop if current page is Landing -->
-<svelte:component this={pages[current]} navigate={navigate} />
+ <svelte:component this={pages[current]} navigate={navigate} /> <!-- Pass navigate prop to all pages except Landing. -->

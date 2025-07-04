@@ -7,7 +7,7 @@
   <div class="brand" on:click={() => navigate("landing")}>CertificateGen 🖹🖺 </div>
 
   <ul>
-    <li class:active={current === "landing"} on:click={() => navigate("home")}>Home</li>
+    <li class:active={current === "home"} on:click={() => navigate("home")}>Home</li>
     <li class:active={current === "about"}   on:click={() => navigate("about")}>About&nbsp;Us</li>
     <li class:active={current === "contact"} on:click={() => navigate("contact")}>Contact</li>
     <li on:click={() => navigate("landing")}>Signout</li>
