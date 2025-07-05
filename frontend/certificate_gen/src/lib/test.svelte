@@ -1,31 +1,3 @@
-<!-- <script>
-  /* keep your existing image imports */
-  import officeWorkers  from "../assets/Images/Home/officeWorkers.gif";
-  import demoCertImg1   from "../assets/Images/Home/demoCertImg1.png";
-  import demoCertImg2   from "../assets/Images/Home/demoCertImg2.png";
-  import demoCertImg3   from "../assets/Images/Home/demoCertImg3.png";
-  import demoCertImg4   from "../assets/Images/Home/demoCertImg4.png";
-  const demoImg = [demoCertImg1, demoCertImg2, demoCertImg3, demoCertImg4];
-
-  /** Main form handler */
-  async function handleSubmit(e) {
-    e.preventDefault();                // stop default navigation
-    const formData = new FormData(e.target);
-    try {
-      const res = await fetch("http://localhost:5000/api/FormData", {
-        method: "POST",
-        body: formData
-      });
-      const data = await res.json();
-      console.log("Backend response:", data);
-
-      // 🔽 TODO: show toast / route to preview page etc.
-    } catch (err) {
-      console.error("Submit failed:", err);
-      alert("Something went wrong. Please try again.");
-  }
-}
-</script> -->
 
 <script>
   import officeWorkers from "../assets/Images/Home/officeWorkers.gif";
@@ -41,8 +13,6 @@
 
     const form = e.target;
     const formData = new FormData(form);
-
-    console.log(Object.fromEntries(formData)); // used to get form data payload.
 
     try {
       const response = await fetch("http://localhost:5000/api/FormData", {
@@ -780,79 +750,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Assets Section -->
-      <div class="form-section">
-        <div class="section-title">🎨 Assets & Files</div>
-        
-        <div class="input-row">
-          <div class="input-group">
-            <label for="logo">Organisation Logo (.png)</label>
-            <input id="logo" name="logo" type="file" accept=".png" />
-          </div>
-
-          <div class="input-group">
-            <label for="logo2">Event Logo (.png)</label>
-            <input id="logo2" name="logo2" type="file" accept=".png" />
-          </div>
-        </div>
-
-        <div class="input-group">
-          <label for="formfile">CSV File</label>
-          <input id="formfile" name="file" type="file" multiple accept=".csv,text/csv" required />
-        </div>
-      </div>
-
-      <!-- Organizers Section -->
-      <div class="form-section">
-        <div class="section-title">✍️ Organizers</div>
-        
-        <div class="input-row">
-          <div class="input-group">
-            <label for="Organizer1Desig">Organizer 1 Designation</label>
-            <input id="Organizer1Desig" name="Organizer1Desig" type="text" required placeholder="Enter designation" />
-          </div>
-
-          <div class="input-group">
-            <label for="organizer1">Organizer 1 Signature (.png)</label>
-            <input id="organizer1" name="organizer1" type="file" accept=".png" />
-          </div>
-        </div>
-
-        <div class="input-row">
-          <div class="input-group">
-            <label for="Organizer2Desig">Organizer 2 Designation</label>
-            <input id="Organizer2Desig" name="Organizer2Desig" type="text" required placeholder="Enter designation" />
-          </div>
-
-          <div class="input-group">
-            <label for="organizer2">Organizer 2 Signature (.png)</label>
-            <input id="organizer2" name="organizer2" type="file" accept=".png" />
-          </div>
-        </div>
-      </div>
-
-      <!-- Template Selection -->
-      <div class="template-section">
-        <h2 class="pick-head">Choose Your Template</h2>
-        <div class="template-picker">
-          <ul class="template-list">
-            {#each demoImg as src, i}
-              <li>
-                <input type="radio"
-                       id="choice{i}"
-                       name="certificate_choice"
-                       value={`Choice${i+1}`}
-                       checked={i === 0} />
-                <label for="choice{i}">
-                  <img src={src} alt={`Template ${i+1}`} />
-                </label>
-              </li>
-            {/each}
-          </ul>
-        </div>
-      </div>
-
       <!-- Action Buttons -->
       <div class="actions">
         <button class="preview" name="action" value="Preview" type="submit">
