@@ -22,6 +22,10 @@ def receive_data():
     print("Received from frontend:", data)
     return jsonify({"status": "received", "data": data})
 
+@app.route('/api/FormData', methods=['POST'])
+def userFormData():
+    print('code will starts from here')
+    return jsonify({"message":"Afterwards we start the code......ok"})
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
