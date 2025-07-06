@@ -1,32 +1,3 @@
-<!-- <script>
-  /* keep your existing image imports */
-  import officeWorkers  from "../assets/Images/Home/officeWorkers.gif";
-  import demoCertImg1   from "../assets/Images/Home/demoCertImg1.png";
-  import demoCertImg2   from "../assets/Images/Home/demoCertImg2.png";
-  import demoCertImg3   from "../assets/Images/Home/demoCertImg3.png";
-  import demoCertImg4   from "../assets/Images/Home/demoCertImg4.png";
-  const demoImg = [demoCertImg1, demoCertImg2, demoCertImg3, demoCertImg4];
-
-  /** Main form handler */
-  async function handleSubmit(e) {
-    e.preventDefault();                // stop default navigation
-    const formData = new FormData(e.target);
-    try {
-      const res = await fetch("http://localhost:5000/api/FormData", {
-        method: "POST",
-        body: formData
-      });
-      const data = await res.json();
-      console.log("Backend response:", data);
-
-      // 🔽 TODO: show toast / route to preview page etc.
-    } catch (err) {
-      console.error("Submit failed:", err);
-      alert("Something went wrong. Please try again.");
-  }
-}
-</script> -->
-
 <script>
   import officeWorkers from "../assets/Images/Home/officeWorkers.gif";
   import demoCertImg1 from "../assets/Images/Home/demoCertImg1.png";
@@ -36,13 +7,27 @@
 
   const demoImg = [demoCertImg1, demoCertImg2, demoCertImg3, demoCertImg4];
 
+
+  let clickedAction = null;
+
+  function handleClick(e) {
+    clickedAction = e.target.value; // Save which button was clicked
+  }
+
+
+
   async function handleSubmit(e) {
     e.preventDefault(); // Prevent full page reload
 
     const form = e.target;
     const formData = new FormData(form);
+    // console.log(Object.fromEntries(formData)); // used to get form data payload.
 
-    console.log(Object.fromEntries(formData)); // used to get form data payload.
+    // Append action value manually
+    if (clickedAction) {
+      formData.append("action", clickedAction);
+    }
+
 
     try {
       const response = await fetch("http://localhost:5000/api/FormData", {
@@ -855,12 +840,8 @@
 
       <!-- Action Buttons -->
       <div class="actions">
-        <button class="preview" name="action" value="Preview" type="submit">
-          👁️ Preview
-        </button>
-        <button class="generate" name="action" value="Generate" type="submit">
-          🚀 Generate
-        </button>
+        <button class="preview" name="action" value="Preview" type="submit" on:click={handleClick} > 👁️ Preview </button>
+        <button class="generate" name="action" value="Generate" type="submit" on:click={handleClick} > 🚀 Generate </button>
       </div>
     </form>
   </div>

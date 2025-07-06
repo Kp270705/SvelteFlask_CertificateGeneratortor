@@ -5,6 +5,8 @@ from werkzeug.utils import secure_filename
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
+from PythonTasks.helper import helper
+
 # -----------------------------------------------------------------------------
 # CONFIG
 # -----------------------------------------------------------------------------
@@ -14,7 +16,7 @@ BASE_DIR = Path(__file__).resolve().parent
 UPLOAD_DIR = BASE_DIR / "uploads"
 # print(f"upload dir: {UPLOAD_DIR}")
 UPLOAD_DIR.mkdir(exist_ok=True)
-print(f"UPLOAD_DIR.mkdir(exist_ok=True): {UPLOAD_DIR.mkdir(exist_ok=True)}")
+# print(f"UPLOAD_DIR.mkdir(exist_ok=True): {UPLOAD_DIR.mkdir(exist_ok=True)}")
 
 
 ALLOWED_IMAGE_EXT = {".png", ".jpg", ".jpeg", ".webp"}
@@ -35,6 +37,8 @@ def _save_file(file_storage, subdir=""):
     """Save an uploaded FileStorage to disk and return its server path."""
     if not file_storage or not file_storage.filename:
         return None
+    
+    # print(f"file storage: {file_storage}")
 
     filename = secure_filename(file_storage.filename)
     ext = Path(filename).suffix.lower()
@@ -87,6 +91,12 @@ def userFormData():
             "action":             request.form.get("action"),  # Preview / Generate
         }
 
+        textValues = list(text_fields.values())
+        print(f"\n\ntextValues: {textValues}")
+        print(f"\n\ntype of 'textValues': {type(textValues)}")
+        action = request.form.get("action") or "Generate"
+        print(f"action: {action}")
+
         # ---------- 2) FILES ----------
         saved_files = {
             "logo":        _save_file(request.files.get("logo"),        "logos"),
@@ -95,6 +105,8 @@ def userFormData():
             "organizer2":  _save_file(request.files.get("organizer2"),  "signatures"),
             "csv":[]
         } # ........
+        filePaths = list(saved_files.values())
+        filePaths.pop() # to remove last empty list from list
 
         # # CSV(s) – could be multiple
         csv_files = [] # ..........
@@ -105,8 +117,8 @@ def userFormData():
         saved_files["csv"] = csv_files # ................
 
         # # ---------- 3) LOG / DEBUG ----------
-        print("⇢ Text fields:", text_fields)
-        print("⇢ Saved files :", saved_files) # .............
+        # print("\n\n⇢ Text fields:", text_fields)
+        # print("\n\n⇢ Saved files :", saved_files) # .............
 
         # ---------- 4) TODO: CERTIFICATE GENERATION ----------
         # • Read csv_files                           → pandas / csv module
@@ -125,7 +137,8 @@ def userFormData():
     except Exception as exc:
         print("❌ Error in /api/FormData:", exc)
         return jsonify(error=str(exc)), 400
-
+    
+    # helper(textValues, filePaths, csvFiles)
 
 # -----------------------------------------------------------------------------
 # ENTRY‑POINT
