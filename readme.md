@@ -49,13 +49,15 @@ A **full-stack web application** that generates beautiful PDF certificates and d
 
 ## 🖼 Project Structure
 
+```text
 project/
 │
 ├── frontend/ (Svelte App)
 │ ├── src/
-│ │ ├── routes/
+│ │ ├── pages/
 │ │ │ └── Home.svelte ← Upload CSV and trigger cert generation
 │ │ └── App.svelte
+│ │ └── Navigation.svelte
 │ └── public/
 │
 ├── backend/ (Flask App)
@@ -72,12 +74,7 @@ project/
 │ └── static/Images/...
 │
 └── README.md
-
-
-
-
-
-
+```
 
 ---
 
@@ -102,8 +99,6 @@ pip install -r requirements.txt
 python app.py
 
 ```
-
-
 
 ### 2. Frontend (Svelte)
 
