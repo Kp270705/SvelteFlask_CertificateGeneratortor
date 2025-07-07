@@ -5,7 +5,7 @@ from werkzeug.utils import secure_filename
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
-from PythonTasks.helper import helper
+from PythonTasks.helper import formDataHelper
 
 # -----------------------------------------------------------------------------
 # CONFIG
@@ -79,6 +79,8 @@ def receive_data():
 # -----------------------------------------------------------------------------
 @app.post("/api/FormData")
 def userFormData():
+    print("\n\n\n\n")
+    print(f"===================================== OUR CONSOLE STARTS HERE ==========================================")
     try:
         # ---------- 1) TEXT FIELDS ----------
         text_fields = {
@@ -92,10 +94,6 @@ def userFormData():
         }
 
         textValues = list(text_fields.values())
-        print(f"\n\ntextValues: {textValues}")
-        print(f"\n\ntype of 'textValues': {type(textValues)}")
-        action = request.form.get("action") or "Generate"
-        print(f"action: {action}")
 
         # ---------- 2) FILES ----------
         saved_files = {
@@ -127,6 +125,9 @@ def userFormData():
         # • Save PDFs / PNGs                         → output dir / maybe zip
         # • Return download link or generate ZIP     → send_file / jsonify link
 
+
+        res = formDataHelper(text_fields, saved_files)
+
         return jsonify(
             status="ok",
             text=text_fields,
@@ -136,9 +137,9 @@ def userFormData():
 
     except Exception as exc:
         print("❌ Error in /api/FormData:", exc)
-        return jsonify(error=str(exc)), 400
+        return jsonify(error=str(exc)), 400    
     
-    # helper(textValues, filePaths, csvFiles)
+    
 
 # -----------------------------------------------------------------------------
 # ENTRY‑POINT
