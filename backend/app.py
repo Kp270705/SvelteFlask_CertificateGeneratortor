@@ -11,16 +11,13 @@ from PythonTasks.helper import formDataHelper
 # CONFIG
 # -----------------------------------------------------------------------------
 BASE_DIR = Path(__file__).resolve().parent
-# print(f"BASE_DIR: {BASE_DIR}")
-# print(f"Path(): {Path()}")
 UPLOAD_DIR = BASE_DIR / "uploads"
-# print(f"upload dir: {UPLOAD_DIR}")
 UPLOAD_DIR.mkdir(exist_ok=True)
-# print(f"UPLOAD_DIR.mkdir(exist_ok=True): {UPLOAD_DIR.mkdir(exist_ok=True)}")
 
 
 ALLOWED_IMAGE_EXT = {".png", ".jpg", ".jpeg", ".webp"}
 ALLOWED_CSV_EXT   = {".csv"}
+
 
 # -----------------------------------------------------------------------------
 # FLASK INIT
@@ -30,6 +27,7 @@ CORS(app)  # allow any origin (good for dev – tighten in prod)
 
 # CORS(app, resources={r"/api/*": {"origins": "https://your-svelte-domain.com"}}) # this is for production.
 
+
 # -----------------------------------------------------------------------------
 # HELPER FUNCTIONS
 # -----------------------------------------------------------------------------
@@ -37,8 +35,6 @@ def _save_file(file_storage, subdir=""):
     """Save an uploaded FileStorage to disk and return its server path."""
     if not file_storage or not file_storage.filename:
         return None
-    
-    # print(f"file storage: {file_storage}")
 
     filename = secure_filename(file_storage.filename)
     ext = Path(filename).suffix.lower()
