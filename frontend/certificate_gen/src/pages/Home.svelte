@@ -5,7 +5,7 @@
   import demoCertImg3 from "../assets/Images/Home/demoCertImg3.png";
   import demoCertImg4 from "../assets/Images/Home/demoCertImg4.png";
 
-  const demoImg = [demoCertImg1, demoCertImg2, demoCertImg3, demoCertImg4];
+  const demoImg = [demoCertImg1, demoCertImg2, demoCertImg3, demoCertImg4, demoCertImg2];
 
 
   let clickedAction = null;
@@ -28,23 +28,22 @@
       formData.append("action", clickedAction);
     }
 
-
     try {
       const response = await fetch("http://localhost:5000/api/FormData", {
         method: "POST",
         body: formData,
       });
 
+      const result = await response.json();
       if (!response.ok) {
-        throw new Error(`Server responded with ${response.status}`);
+        throw new Error(result.error || `Server responded with ${response.status}`);
       }
 
-      const result = await response.json();
       console.log("✅ Backend Response:", result);
       alert("🎉 Form submitted successfully!");
     } catch (error) {
       console.error("❌ Submission failed:", error);
-      alert("❗ Something went wrong. Check the console for details.");
+      alert("❗"+ error.message);
     }
   }
 </script>

@@ -6,6 +6,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 from PythonTasks.helper import formDataHelper
+from PythonTasks.Exceptions.handleExceptions import CertificateError
 
 # -----------------------------------------------------------------------------
 # CONFIG
@@ -88,7 +89,6 @@ def userFormData():
             "Organizer2Desig":    request.form.get("Organizer2Desig"),
             "action":             request.form.get("action"),  # Preview / Generate
         }
-
         textValues = list(text_fields.values())
 
         # ---------- 2) FILES ----------
@@ -130,12 +130,19 @@ def userFormData():
             files=saved_files, # .........
             message="Form data received – certificate generation yet to be implemented.",
         )
+    
+    except CertificateError as ce: # Let Flask's error‑handler catch it
+        raise ce  
 
     except Exception as exc:
-        print("❌ Error in /api/FormData:", exc)
-        return jsonify(error=str(exc)), 400    
+        print("❌ Unexpected Error in /api/FormData:", exc)
+        return jsonify(error="Internal server error"), 500  
     
-    
+
+@app.errorhandler(CertificateError)
+def handle_certificate_error(e):
+    print(f"\n\tEception handler called...{e.message}")
+    return jsonify({"error": e.message}), 400  # or 422 (unprocessable entity)  
 
 # -----------------------------------------------------------------------------
 # ENTRY‑POINT

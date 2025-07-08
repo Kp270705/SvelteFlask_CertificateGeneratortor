@@ -10,9 +10,9 @@ def getTemplateContentPath(certificateChoice):
     return pathKey
 
 
-def genTemplate(certificateChoice, logo1, logo2, organizer1, organizer2):
+def genTemplate(certificateChoice, logo1, logo2, organizer1_sign, organizer2_sign):
     pathKey = getTemplateContentPath(certificateChoice)
-    args = [pathKey["TemplatePath"], logo1, logo2, pathKey["linepath"], organizer1, organizer2]
+    args = [pathKey["TemplatePath"], logo1, logo2, pathKey["linepath"], organizer1_sign, organizer2_sign]
     
     templateDesign = {
         f"Choice1": templatedesign1_2_3,
@@ -24,8 +24,7 @@ def genTemplate(certificateChoice, logo1, logo2, organizer1, organizer2):
     templatePath = templateDesign[certificateChoice](args)
     return templatePath
 
-
-def processData(csvData, eventName, orgName, certificateType, organizer1Desig, organizer2Desig, certificateChoice, action, logo1, logo2, organizer1, organizer2):
-    templatePath = genTemplate(certificateChoice, logo1, logo2, organizer1, organizer2)
-    getCertData(csvData, eventName, orgName, certificateType, organizer1Desig, organizer2Desig, certificateChoice, action, templatePath)
+def processData(csvData, eventname, orgName, certType, organizer1_desig, organizer2_desig, certChoice, action, logo1, logo2, organizer1_sign, organizer2_sign):
+    template_path = genTemplate(certChoice, logo1, logo2, organizer1_sign, organizer2_sign)
+    getCertData(csvData, eventname, orgName, certType, organizer1_desig, organizer2_desig, certChoice, action, template_path)
 

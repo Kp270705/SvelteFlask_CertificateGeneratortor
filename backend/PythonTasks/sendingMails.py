@@ -7,7 +7,7 @@ from email import encoders
 from PythonTasks.passwordsInfo import password3
 
 def send_mails(email_sender, email_receiver, file_path, eventname, cert_type):
-    print("\n\nIn send_mails")
+    print("\nIn send_mails")
 
     email_subject = f"Your {eventname} certificate."
     email_body = f"This is to inform you, we just sent your {eventname}'s certificate {cert_type}."
@@ -39,4 +39,3 @@ def send_mails(email_sender, email_receiver, file_path, eventname, cert_type):
     server.quit()
 
     print("\tMessage sent successfully....\n")
-    print(f"------------------------------------------------------\n")

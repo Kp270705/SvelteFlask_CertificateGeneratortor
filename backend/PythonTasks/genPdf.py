@@ -5,6 +5,7 @@ import datetime as dt
 from PythonTasks.getFonts import FONTS
 from PythonTasks.fileHandle import checkPDFFolderExist
 from PythonTasks.sendingMails import send_mails
+from PythonTasks.Exceptions.handleExceptions import CertificateError
 # import io
 
 def certChoice():
@@ -339,56 +340,53 @@ class PDF(FPDF):
 
 # --------------------------------------------------------------------------     
 
-def getCertData(csvData, eventname, orgName, certType, organizer1_designation, organizer2_designation, certificateChoice, action,  PDF_TemplatePath):
-    # print(f"In getData...")
+
+def getCertData(csvData, eventname, orgName, certType, org1_desig, org2_desig, certChoice, action, template_path):
+    total = 1 if action == "Preview" else len(csvData)
+    print(f"\n\t----- {action} mode: Only {total} certificate will be generated. -----\n")
     print(f"\n------------------------------------------------------\n")
-    
+
+
     for i, csv in enumerate(csvData, start=1):
+        checkPDFFolderExist(i) # for recreating folders of each user.
         pdf = PDF()
         pdf.set_left_margin(10)
         pdf.set_right_margin(10)
         pdf.set_top_margin(10)
         pdf.set_auto_page_break(auto=True, margin=15)
-        fontcolor = 0
-        certgenArgs = []
+
+        choice_map = {
+            "Choice1": (pdf.certificate1_2_3, 0),
+            "Choice2": (pdf.certificate1_2_3, 0),
+            "Choice3": (pdf.certificate1_2_3, 220),
+            "Choice4": (pdf.certificate4,     0),
+        }
+
+        if certChoice not in choice_map:
+            err = f"❌ Invalid certificate template: {certChoice}\n\nSelect other template."
+            # print(f" {err} ")
+            raise CertificateError(err)
+            
+        
+        cert_func, fontcolor = choice_map[certChoice]
+        
+        if action == "Preview" and i > 1: # If preview, only generate one certificate
+            break
+
+        # ------------------------ DEBUG MODE ------------------------
+
         print(f"User{i} Data:")
         print(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date)
-        checkPDFFolderExist(i)
+
+        # ------------------------------------------------------------
+
+        cert_func(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date, eventname, orgName, i, certType, certChoice, action, fontcolor, org1_desig, org2_desig, template_path)
+        out_file = f"./static/PDFFolder/{action}Certificate{i}.pdf"
+        pdf.output(out_file)
+        print(f"\n{i} certificate is being generated...\n")
+
 
         if action == "Generate":
-            if certificateChoice == "Choice1":
-                pdf.certificate1_2_3(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date,eventname, orgName, i, certType, certificateChoice, action, fontcolor, organizer1_designation, organizer2_designation, PDF_TemplatePath)
+            send_mails("kunalpathak4774@gmail.com", csv.emailId, out_file, eventname, certType)
 
-            if certificateChoice == "Choice2":
-                pdf.certificate1_2_3(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date, eventname, orgName, i, certType, certificateChoice, action, 0, organizer1_designation, organizer2_designation, PDF_TemplatePath)
-            
-            if certificateChoice == "Choice3":
-                pdf.certificate1_2_3(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date, eventname, orgName, i, certType, certificateChoice, action, 220, organizer1_designation, organizer2_designation, PDF_TemplatePath)
-            
-            if certificateChoice == "Choice4":
-                pdf.certificate4(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date, eventname, orgName, i, certType, certificateChoice, action, fontcolor, organizer1_designation, organizer2_designation, PDF_TemplatePath)
-
-            print(f"\n{i} certificate is being generated...\n")
-            pdf.output(f"./static/PDFFolder/{action}Certificate{i}.pdf")
-            send_mails(f"kunalpathak4774@gmail.com", csv.emailId, f"./static/PDFFolder/{action}Certificate{i}.pdf", eventname, certType)
-
-
-        if action == "Preview":
-            if i>1: # this condition is for generating pdf for first row of csv file. Used in preview mode.
-                print(f"\n\n\t-----In Preview mode only first rows data's certificate will be generated.-----\n")
-                break
-            if certificateChoice == "Choice1":
-                pdf.certificate1_2_3(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date,eventname, orgName, i, certType, certificateChoice, action, fontcolor, organizer1_designation, organizer2_designation, PDF_TemplatePath)
-
-            if certificateChoice == "Choice2":
-                pdf.certificate1_2_3(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date, eventname, orgName, i, certType, certificateChoice, action, 220, organizer1_designation, organizer2_designation, PDF_TemplatePath)
-            
-            if certificateChoice == "Choice3":
-                pdf.certificate1_2_3(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date, eventname, orgName, i, certType, certificateChoice, action, 220, organizer1_designation, organizer2_designation, PDF_TemplatePath)
-            
-            if certificateChoice == "Choice4":
-                pdf.certificate4(csv.name, csv.sId, csv.emailId, csv.course, csv.semester, csv.date, eventname, orgName, i, certType, certificateChoice, action, fontcolor, organizer1_designation, organizer2_designation, PDF_TemplatePath)
-            print(f"\n Preview of {i} certificate completed...\n")
-            pdf.output(f"./static/PDFFolder/{action}Certificate{i}.pdf")
-            print(f"\n\n------------------------------------------------------\n")
-            # here we did not send any email, because it is just preview of selected certificate.
+        print(f"\n\n------------------------------------------------------\n")
