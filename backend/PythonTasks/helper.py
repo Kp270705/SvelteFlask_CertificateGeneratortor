@@ -31,22 +31,7 @@ def formDataHelper(textData, filePathData):
     # textDataList = [eventname, orgName]
 
 
-    '''
-    Media file path payload:
 
-    filePathData: {
-        'logo': '/home/vivobook/Arena/Projects/svelteFlaskApp/Svelte_certificate_generator/backend/uploads/logos/gehucolor.png',
-
-        'logo2': '/home/vivobook/Arena/Projects/svelteFlaskApp/Svelte_certificate_generator/backend/uploads/logos/TechGeeksLogoColor.png',
-
-        'organizer1': '/home/vivobook/Arena/Projects/svelteFlaskApp/Svelte_certificate_generator/backend/uploads/signatures/hod.png',
-
-        'organizer2': '/home/vivobook/Arena/Projects/svelteFlaskApp/Svelte_certificate_generator/backend/uploads/signatures/cc.png',
-
-        'csv': ['/home/vivobook/Arena/Projects/svelteFlaskApp/Svelte_certificate_generator/backend/uploads/csv/kpData4.csv']
-    }
-
-    '''
     
     # file paths:
     logo1 = filePathData['logo']
