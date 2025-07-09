@@ -1,5 +1,5 @@
 <script>
-    import certImg from "../assets/demoCert.png";
+    import certImg from "../assets/Images/auth/demoCert2.png";
   export let navigate;
   // console.log(`From Landing and navigate is: ${navigate}`);
 </script>

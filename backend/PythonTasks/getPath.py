@@ -6,7 +6,7 @@ certificate_choice = {
 
     "auth1Path" : f"{CertificateHome}/auth1White.png",
     "auth2Path" : f"{CertificateHome}/auth2White.png",
-    "linepath" : f"{CertificateHome}/line1.png",
+    "linepath" : f"{CertificateHome}/lineW.png",
     },
 
     "Choice2":{
@@ -14,14 +14,14 @@ certificate_choice = {
     "logo2Path ": f"{CertificateHome}/TechGeeksLogoColor.png",
     "auth1Path" : f"{CertificateHome}/auth1.png",
     "auth2Path" : f"{CertificateHome}/auth2.png",
-    "linepath" : f"{CertificateHome}/line1b.png",
+    "linepath" : f"{CertificateHome}/lineB.png",
     },
     "Choice3":{
     "TemplatePath" :f"{CertificateHome}/cert_theme3.png",
     "logo2Path ": f"{CertificateHome}/TechGeeksLogoColor.png",
     "auth1Path" : f"{CertificateHome}/auth1.png",
     "auth2Path" : f"{CertificateHome}/auth2.png",
-    "linepath" : f"{CertificateHome}/line1b.png",
+    "linepath" : f"{CertificateHome}/lineB.png",
     },
 
     "Choice4":{
@@ -29,7 +29,7 @@ certificate_choice = {
     "logo2Path ": f"{CertificateHome}/TechGeeksLogo.png",
     "auth1Path" : f"{CertificateHome}/auth1.png",
     "auth2Path" : f"{CertificateHome}/auth2.png",
-    "linepath" : f"{CertificateHome}/line1g.png",
+    "linepath" : f"{CertificateHome}/lineG.png",
     },
 
 
@@ -38,7 +38,7 @@ certificate_choice = {
     "logo2Path ": f"{CertificateHome}/TechGeeksLogoColor.png",
     "auth1Path" : f"{CertificateHome}/auth1.png",
     "auth2Path" : f"{CertificateHome}/auth2.png",
-    "linepath" : f"{CertificateHome}/line1g.png",
+    "linepath" : f"{CertificateHome}/lineG.png",
     },
 
 }

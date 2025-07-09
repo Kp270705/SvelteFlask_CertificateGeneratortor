@@ -357,10 +357,10 @@ def getCertData(csvData, eventname, orgName, certType, org1_desig, org2_desig, c
         pdf.set_auto_page_break(auto=True, margin=15)
 
         choice_map = {
-            "Choice1": (pdf.certificate1_2_3, 0),
+            "Choice1": (pdf.certificate1_2_3, 220),
             "Choice2": (pdf.certificate1_2_3, 0),
-            "Choice3": (pdf.certificate1_2_3, 220),
-            "Choice4": (pdf.certificate4,     0),
+            "Choice3": (pdf.certificate1_2_3, 0),
+            "Choice4": (pdf.certificate4,     220),
         }
 
         if certChoice not in choice_map:
