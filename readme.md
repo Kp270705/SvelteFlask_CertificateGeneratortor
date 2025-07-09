@@ -96,7 +96,7 @@ cd backend
     env\Scripts\activate
 
 pip install -r requirements.txt
-python app.py
+flask run --debug
 
 ```
 

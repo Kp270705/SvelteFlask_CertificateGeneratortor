@@ -365,7 +365,6 @@ def getCertData(csvData, eventname, orgName, certType, org1_desig, org2_desig, c
 
         if certChoice not in choice_map:
             err = f"❌ Invalid certificate template: {certChoice}\n\nSelect other template."
-            # print(f" {err} ")
             raise CertificateError(err)
             
         
