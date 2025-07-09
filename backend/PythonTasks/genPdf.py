@@ -4,7 +4,7 @@ import shutil
 import datetime as dt
 from PythonTasks.getFonts import FONTS
 from PythonTasks.fileHandle import checkPDFFolderExist
-from PythonTasks.sendingMails import send_mails
+from PythonTasks.sendingMails import send_bulk_parallel
 from PythonTasks.Exceptions.handleExceptions import CertificateError
 # import io
 
@@ -386,7 +386,16 @@ def getCertData(csvData, eventname, orgName, certType, org1_desig, org2_desig, c
         print(f"\n{i} certificate is being generated...\n")
 
 
-        if action == "Generate":
-            send_mails("kunalpathak4774@gmail.com", csv.emailId, out_file, eventname, certType)
+        # if action == "Generate":
+        #     send_mails("kunalpathak4774@gmail.com", csv.emailId, out_file, eventname, certType)
+
+    if action == "Generate":
+        recipients = [
+            (csv.emailId, f"./static/PDFFolder/{action}Certificate{i}.pdf")
+            for i, csv in enumerate(csvData, start=1)
+        ]
+
+        send_bulk_parallel(recipients, eventname, certType)
+
 
         print(f"\n\n------------------------------------------------------\n")

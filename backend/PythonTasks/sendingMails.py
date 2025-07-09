@@ -1,41 +1,46 @@
-import os
-import smtplib
+import smtplib, os
+from concurrent.futures import ThreadPoolExecutor
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 from PythonTasks.passwordsInfo import password3
 
-def send_mails(email_sender, email_receiver, file_path, eventname, cert_type):
-    print("\nIn send_mails")
+SMTP_HOST = "smtp.gmail.com"
+SMTP_PORT = 587
+MAX_WORKERS = 4          # 4 parallel connections
+SENDER = "kunalpathak4774@gmail.com"
 
-    email_subject = f"Your {eventname} certificate."
-    email_body = f"This is to inform you, we just sent your {eventname}'s certificate {cert_type}."
-    password = password3
-
+def build_msg(to_addr, file_path, event, ctype):
     msg = MIMEMultipart()
-    msg['From'] = email_sender
-    msg['To'] = email_receiver
-    msg['Subject'] = email_subject
-    msg.attach(MIMEText(email_body, 'plain'))
+    msg["From"], msg["To"] = SENDER, to_addr
+    msg["Subject"] = f"Your {event} certificate"
+    msg.attach(MIMEText(
+        f"Hi,\n\nAttached is your {event} {ctype}.\n\nBest.", "plain"))
 
-    # open the file to send:
-    filename = os.path.basename(file_path)
-    with open(file_path, 'rb') as attachment:
-        p = MIMEBase('application', 'octet-stream')
-        p.set_payload(attachment.read())
+    fn = os.path.basename(file_path)
+    with open(file_path, "rb") as f:
+        part = MIMEBase("application", "octet-stream")
+        part.set_payload(f.read())
+    encoders.encode_base64(part)
+    part.add_header("Content-Disposition", f"attachment; filename={fn}")
+    msg.attach(part)
+    return msg
 
-    encoders.encode_base64(p)
-    p.add_header("Content-Disposition", f"attachment; filename={filename}")
+def send_one(args):
+    to_addr, pdf, event, ctype = args
+    try:
+        server = smtplib.SMTP(SMTP_HOST, SMTP_PORT, timeout=20)
+        server.starttls()
+        server.login(SENDER, f"{password3}")
+        server.send_message(build_msg(to_addr, pdf, event, ctype))
+        server.quit()
+        print(f"✅ {to_addr}")
+    except Exception as e:
+        print(f"❌ {to_addr}: {e}")
 
-    msg.attach(p)
-
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(email_sender, f"{password}")
-
-    text = msg.as_string()
-    server.send_message(msg)
-    server.quit()
-
-    print("\tMessage sent successfully....\n")
+def send_bulk_parallel(recipients, event, ctype):
+    # recipients = [(email, pdfPath), ...]
+    with ThreadPoolExecutor(MAX_WORKERS) as ex:
+        ex.map(send_one,
+               [(email, pdf, event, ctype) for email, pdf in recipients])
