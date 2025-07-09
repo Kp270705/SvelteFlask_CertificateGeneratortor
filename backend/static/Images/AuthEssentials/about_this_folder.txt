@@ -1,3 +1,0 @@
-This is the folder where you keep the images used in the login/signup pages.
-
-*** Do not delete this folder. ***

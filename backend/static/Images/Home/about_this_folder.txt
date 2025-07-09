@@ -1,3 +1,0 @@
-This is the folder where you keep the images used on the homepage (main page). It contains certificate template design images that users can select for their certificate generation.
-
-*** Do not delete this folder. ***

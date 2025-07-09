@@ -1,3 +1,0 @@
-This is the folder where you keep the images used in the acknowledgement section of certificate generation (these images are displayed after the certificate is generated successfully).
-
-*** Do not delete this folder. ***

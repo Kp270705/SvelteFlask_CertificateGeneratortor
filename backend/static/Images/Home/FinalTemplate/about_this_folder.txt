@@ -1,4 +1,0 @@
-This is the folder where you keep the images generated for the template design. These images are where the user's information will be written as certificate information.
-
-*** Do not delete this folder. ***
-
