@@ -12,7 +12,7 @@ A **full-stack web application** that generates beautiful PDF certificates and d
 
 ## 📸 Demo
 
-![Certificate Sample](./static/demo/CertificateSample.png)
+![Certificate Sample](./frontend/certificate_gen/src/assets/Images/Home/demoCertImg4.png)
 
 ---
 

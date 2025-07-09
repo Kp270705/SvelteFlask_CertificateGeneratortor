@@ -130,8 +130,8 @@ class PDF(FPDF):
         self.multi_cell(277, 10, text=self.section9, align='C')
         self.ln(20)  # Add some space after title
 
-        auth1 = f"        {organizer1_designation}"
-        auth2 = f"    {organizer2_designation}"
+        auth1 = f"{organizer1_designation}"
+        auth2 = f"{organizer2_designation}"
         spacedSection10a = add_spacing(auth1.upper(), 1)
         spacedSection10b = add_spacing(auth2.upper(), 1)
         self.section10 = f"{spacedSection10a}                   {spacedSection10b}"
@@ -140,6 +140,7 @@ class PDF(FPDF):
         self.cell(90, 3, text=f"{spacedSection10a}", align='C')
         self.set_left_margin(50)
         self.cell(50, 3, text=f"{spacedSection10b}", align='C')
+
 
 
 # ----------------------------------------------------------------
