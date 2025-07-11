@@ -4,20 +4,21 @@
   import demoCertImg2 from "../assets/Images/Home/demoCertImg2.png";
   import demoCertImg3 from "../assets/Images/Home/demoCertImg3.png";
   import demoCertImg4 from "../assets/Images/Home/demoCertImg4.png";
+  import Acknowledgement from './Acknowledgement.svelte';
 
   const demoImg = [demoCertImg1, demoCertImg2, demoCertImg3, demoCertImg4, demoCertImg2];
 
 
-  let clickedAction = null;
+  let showAcknowledgement = false;
+  let userName = '';
+  let clickedAction = null; // for button click 
 
   function handleClick(e) {
-    clickedAction = e.target.value; // Save which button was clicked
+    clickedAction = e.target.value;
   }
 
-
-
   async function handleSubmit(e) {
-    e.preventDefault(); // Prevent full page reload
+    e.preventDefault();
 
     const form = e.target;
     const formData = new FormData(form);
@@ -39,8 +40,16 @@
         throw new Error(result.error || `Server responded with ${response.status}`);
       }
 
-      console.log("✅ Backend Response:", result);
-      alert("🎉 Form submitted successfully!");
+      if (response.ok && clickedAction=='Generate'){
+        showAcknowledgement = true;
+        console.log("✅ Backend Response:", result);
+        alert("🎉 Certificates generated successfully!");
+      }
+      if (response.ok && clickedAction=='Preview'){
+        console.log("✅ Backend Response:", result);
+        alert("🎉 Certificate generate for preview mode!");
+      }
+
     } catch (error) {
       console.error("❌ Submission failed:", error);
       alert("❗"+ error.message);
@@ -706,6 +715,12 @@
   }
 </style>
 
+
+<!-- ==========  PAGE CONTENT  ========== -->
+
+{#if showAcknowledgement}
+  <Acknowledgement userName={userName} />
+{:else}
 <!-- ==========  MARKUP  ========== -->
 <div class="wrapper">
   <h1 class="main">🎓 Automated Certificate Generator</h1>
@@ -845,3 +860,4 @@
     </form>
   </div>
 </div>
+{/if}
