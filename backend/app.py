@@ -2,7 +2,7 @@
 import os
 from pathlib import Path
 from werkzeug.utils import secure_filename
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 
 from PythonTasks.helper import formDataHelper
@@ -143,6 +143,16 @@ def userFormData():
 def handle_certificate_error(e):
     print(f"\n\tEception handler called...{e.message}")
     return jsonify({"error": e.message}), 400  # or 422 (unprocessable entity)  
+
+
+@app.route('/api/download-zip', methods=['GET'])
+def download_zip():
+    zip_path = 'path/to/generated_certificates.zip'  # Absolute or relative path
+    if os.path.exists(zip_path):
+        return send_file(zip_path, as_attachment=True)
+    else:
+        return {"error": "ZIP file not found"}, 404
+
 
 # -----------------------------------------------------------------------------
 # ENTRY‑POINT

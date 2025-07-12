@@ -5,6 +5,7 @@ import datetime as dt
 from PythonTasks.getFonts import FONTS
 from PythonTasks.fileHandle import checkPDFFolderExist
 from PythonTasks.sendingMails import send_bulk_parallel
+from PythonTasks.genZip import zip_folder
 from PythonTasks.Exceptions.handleExceptions import CertificateError
 # import io
 
@@ -396,6 +397,6 @@ def getCertData(csvData, eventname, orgName, certType, org1_desig, org2_desig, c
         ]
 
         send_bulk_parallel(recipients, eventname, certType)
+    zip_folder(f"./static/PDFFolder", f"./static/{action}Certificate.zip")
 
-
-        print(f"\n\n------------------------------------------------------\n")
+    print(f"\n\n------------------------------------------------------\n")
