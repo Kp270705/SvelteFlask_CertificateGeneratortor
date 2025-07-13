@@ -4,6 +4,7 @@
   import Home from "./pages/Home.svelte";
   import About from "./pages/About.svelte";
   import Contact from "./pages/Contact.svelte";
+  import Acknowledgement from "./pages/Acknowledgement.svelte";
 
   let current = "landing";
 
@@ -12,6 +13,11 @@
     home: Home,
     about: About,
     contact: Contact
+  };
+
+  const routes = {
+    '/': Home,
+    '/ack': Acknowledgement,
   };
 
   function navigate(page) {

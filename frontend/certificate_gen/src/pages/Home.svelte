@@ -33,6 +33,7 @@
       const response = await fetch("http://localhost:5000/api/FormData", {
         method: "POST",
         body: formData,
+        credentials: "include",
       });
 
       const result = await response.json();

@@ -397,6 +397,9 @@ def getCertData(csvData, eventname, orgName, certType, org1_desig, org2_desig, c
         ]
 
         send_bulk_parallel(recipients, eventname, certType)
-    zip_folder(f"./static/PDFFolder", f"./static/{action}Certificate.zip")
 
+    zipPath = f"./static/{action}Certificate.zip"
+    zip_folder(f"./static/PDFFolder", f"{zipPath}")
     print(f"\n\n------------------------------------------------------\n")
+    return zipPath
+

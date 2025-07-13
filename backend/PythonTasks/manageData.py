@@ -25,5 +25,6 @@ def genTemplate(certificateChoice, logo1, logo2, organizer1_sign, organizer2_sig
 
 def processData(csvData, eventname, orgName, certType, organizer1_desig, organizer2_desig, certChoice, action, logo1, logo2, organizer1_sign, organizer2_sign):
     template_path = genTemplate(certChoice, logo1, logo2, organizer1_sign, organizer2_sign)
-    getCertData(csvData, eventname, orgName, certType, organizer1_desig, organizer2_desig, certChoice, action, template_path)
+    zipPath = getCertData(csvData, eventname, orgName, certType, organizer1_desig, organizer2_desig, certChoice, action, template_path)
+    return zipPath
 

@@ -2,8 +2,9 @@
 import os
 from pathlib import Path
 from werkzeug.utils import secure_filename
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, session
 from flask_cors import CORS
+import secrets
 
 from PythonTasks.helper import formDataHelper
 from PythonTasks.Exceptions.handleExceptions import CertificateError
@@ -24,9 +25,12 @@ ALLOWED_CSV_EXT   = {".csv"}
 # FLASK INIT
 # -----------------------------------------------------------------------------
 app = Flask(__name__)
-CORS(app)  # allow any origin (good for dev – tighten in prod)
-
+# CORS(app, supports_credentials=True)  # allow any origin (good for dev – tighten in prod)
+CORS(app, supports_credentials=True, origins=["http://localhost:5173"])  # allow any origin (good for dev – tighten in prod)
 # CORS(app, resources={r"/api/*": {"origins": "https://your-svelte-domain.com"}}) # this is for production.
+
+# app.secret_key = secrets.token_hex(16)
+app.secret_key = "your_super_secret_key"
 
 
 # -----------------------------------------------------------------------------
@@ -122,7 +126,9 @@ def userFormData():
         # • Return download link or generate ZIP     → send_file / jsonify link
 
 
-        res = formDataHelper(text_fields, saved_files)
+        zipPath = formDataHelper(text_fields, saved_files)
+        session['zipPath'] = zipPath
+        print(f"\n\nAfter returning to app:\nSession is: {session['zipPath']}")
 
         return jsonify(
             status="ok",
@@ -147,11 +153,19 @@ def handle_certificate_error(e):
 
 @app.route('/api/download-zip', methods=['GET'])
 def download_zip():
-    zip_path = 'path/to/generated_certificates.zip'  # Absolute or relative path
-    if os.path.exists(zip_path):
-        return send_file(zip_path, as_attachment=True)
-    else:
+    zipPath = session.get('zipPath')
+    print(f"In zipDownload...\n\tSession path: {zipPath}")
+    # zip_path = f"./static/GenerateCertificate.zip"  # Absolute or relative path
+    
+    if not zipPath:
+        return {"error": "ZIP file not prepared yet"}, 400
+    
+    if not os.path.exists(zipPath):
         return {"error": "ZIP file not found"}, 404
+    
+    print(f"\n\nIn download-zip:\nSession is: {session['zipPath']}")
+    return send_file(zipPath, as_attachment=True)
+
 
 
 # -----------------------------------------------------------------------------

@@ -1,4 +1,5 @@
 <script>
+
     export let userName = "User";
 
     import Hurrah from "../assets/Images/acknowledgement/ack1.gif";
@@ -8,9 +9,59 @@
         send: false
     };
 
-    function downloadZip() {
-        window.open("http://localhost:5000/api/download-zip", "_blank");
+    function goBack() {
+        window.history.back();
     }
+
+    // async function downloadZip() {
+    // try {
+    //     const response = await fetch("http://localhost:5000/api/download-zip", {
+    //         method: "GET",
+    //         credentials: "include", // ❗ required to get the session
+    //     });
+
+    //     if (!response.ok) {
+    //         const result = await response.json();
+    //         throw new Error(result.error || "Download failed");
+    //     }
+
+    //     const blob = await response.blob();
+    //     const url = window.URL.createObjectURL(blob);
+    //     const a = document.createElement("a");
+    //     a.href = url;
+    //     a.download = "certificates.zip"; // desired filename
+    //     a.click();
+    //     window.URL.revokeObjectURL(url);
+    // } catch (err) {
+    //     alert("❌ " + err.message);
+    // }
+    // }
+
+    async function downloadZip() {
+    try {
+        const response = await fetch("http://localhost:5000/api/download-zip", {
+            method: "GET",
+            credentials: "include",
+        });
+
+        if (!response.ok) {
+            const result = await response.json();
+            throw new Error(result.error || "Download failed");
+        }
+
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "certificates.zip";
+        a.click();
+        window.URL.revokeObjectURL(url);
+    } catch (err) {
+        alert("❌ " + err.message);
+    }
+}
+
+
 
     async function sendCertificates() {
         try {
@@ -38,6 +89,7 @@
             alert("❗ Please select at least one option to proceed.");
         }
     }
+
 </script>
 
 <style>
@@ -458,10 +510,10 @@
                     <span class="option-text">Send certificates to recipients</span>
                 </label>
             </div>
+            <button on:click={goBack} class="proceed-btn">⬅️ Back</button> 
+
         </div>
 
-        <button class="proceed-btn" on:click={handleSubmit}>
-            Proceed
-        </button>
+        <button class="proceed-btn" on:click={handleSubmit}> Proceed </button>
     </div>
 </div>

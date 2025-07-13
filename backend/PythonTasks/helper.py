@@ -23,7 +23,7 @@ def formDataHelper(textData, filePathData):
     csv = filePathData['csv']
 
     csvData = processFile(csv[0])
-    processData(csvData, eventname, orgName, certType, organizer1_desig, organizer2_desig, certChoice, action, logo1, logo2, organizer1_sign, organizer2_sign)
-
+    zipPath = processData(csvData, eventname, orgName, certType, organizer1_desig, organizer2_desig, certChoice, action, logo1, logo2, organizer1_sign, organizer2_sign)
     print("\n\n===================================== OUR CONSOLE ENDS HERE ==========================================\n\n\n\n")
+    return zipPath
 
