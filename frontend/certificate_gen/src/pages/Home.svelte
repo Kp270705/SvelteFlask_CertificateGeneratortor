@@ -1,36 +1,64 @@
 <script>
+
+  import { push } from 'svelte-spa-router';
+  import { onMount } from 'svelte';
+
+  // importing static media files:
   import officeWorkers from "../assets/Images/Home/officeWorkers.gif";
   import demoCertImg1 from "../assets/Images/Home/demoCertImg1.png";
   import demoCertImg2 from "../assets/Images/Home/demoCertImg2.png";
   import demoCertImg3 from "../assets/Images/Home/demoCertImg3.png";
   import demoCertImg4 from "../assets/Images/Home/demoCertImg4.png";
-  import Acknowledgement from './Acknowledgement.svelte';
 
   const demoImg = [demoCertImg1, demoCertImg2, demoCertImg3, demoCertImg4, demoCertImg2];
 
+  //form data values:
+  let eventName = $state('');
+  let organizationName = $state('');
+  let certificateType = $state('');
+  let organizer1Desig = $state('');
+  let organizer2Desig = $state('');
+  let clickedAction = null;
 
-  let showAcknowledgement = false;
-  let userName = '';
-  let clickedAction = null; // for button click 
+  onMount(() => {
+    const saved = localStorage.getItem("homeFormData");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        eventName = parsed.eventName || '';
+        organizationName = parsed.organizationName || '';
+        certificateType = parsed.certificateType || '';
+        organizer1Desig = parsed.organizer1Desig || '';
+        organizer2Desig = parsed.organizer2Desig || '';
+      }
+  });
 
-  function handleClick(e) {
+  function handleClick(e) { // manually assigns click value
     clickedAction = e.target.value;
   }
 
+  // Handling user input data:
   async function handleSubmit(e) {
     e.preventDefault();
 
+    const userInputData = {
+      eventName,
+      organizationName,
+      certificateType,
+      organizer1Desig,
+      organizer2Desig,
+    };
+    localStorage.setItem("homeFormData", JSON.stringify(userInputData));
+    console.log(`userInputData: ${eventName}, ${organizationName}, ${certificateType}, ${organizer1Desig}, ${organizer2Desig}`)
+
     const form = e.target;
     const formData = new FormData(form);
-    // console.log(Object.fromEntries(formData)); // used to get form data payload.
-
-    // Append action value manually
+    // Append action value:
     if (clickedAction) {
       formData.append("action", clickedAction);
     }
 
     try {
-      const response = await fetch("http://localhost:5000/api/FormData", {
+      const response = await fetch("http://localhost:5000/home/FormData", {
         method: "POST",
         body: formData,
         credentials: "include",
@@ -41,10 +69,10 @@
         throw new Error(result.error || `Server responded with ${response.status}`);
       }
 
-      if (response.ok && clickedAction=='Generate'){
-        showAcknowledgement = true;
+      if (response.ok && clickedAction === 'Generate') {
         console.log("✅ Backend Response:", result);
         alert("🎉 Certificates generated successfully!");
+        push('/acknowledgement');
       }
       if (response.ok && clickedAction=='Preview'){
         console.log("✅ Backend Response:", result);
@@ -61,6 +89,7 @@
 
 <!-- ==========  GLOBAL COLOURS  ========== -->
 <style>
+
   :root{
     --bg-page:       linear-gradient(135deg, #fef7ed 0%, #fff1f2 25%, #f0f9ff 50%, #f7fee7 75%, #fefce8 100%);
     --bg-card:       rgba(255, 255, 255, 0.95);
@@ -719,10 +748,6 @@
 
 <!-- ==========  PAGE CONTENT  ========== -->
 
-{#if showAcknowledgement}
-  <Acknowledgement userName={userName} />
-{:else}
-<!-- ==========  MARKUP  ========== -->
 <div class="wrapper">
   <h1 class="main">🎓 Automated Certificate Generator</h1>
 
@@ -750,8 +775,7 @@
       </div>
     </div>
 
-    <!-- <form action="/FormData" method="post" enctype="multipart/form-data" on:submit={handleSubmit}> -->
-    <form enctype="multipart/form-data" on:submit={handleSubmit}>      
+    <form enctype="multipart/form-data" on:submit|preventDefault={handleSubmit}>      
 
       <!-- Basic Information Section -->
       <div class="form-section">
@@ -759,18 +783,18 @@
         
         <div class="input-group">
           <label for="eventName">Event Name</label>
-          <input id="eventName" name="eventName" type="text" required placeholder="Enter event name" />
+          <input bind:value={eventName} id="eventName" name="eventName" type="text" placeholder="Enter event name" required />
         </div>
 
         <div class="input-row">
           <div class="input-group">
             <label for="OrgName">Organisation Name</label>
-            <input id="OrgName" name="OrgName" type="text" required placeholder="Enter organisation name" />
+            <input bind:value={organizationName} id="organizationName" name="organizationName" type="text" placeholder="Enter organisation name" required />
           </div>
 
           <div class="input-group">
             <label for="certificateType">Certificate Type</label>
-            <select id="certificateType" name="certificateType" required>
+            <select bind:value={certificateType} id="certificateType" name="certificateType" required>
               <option value="" disabled selected>Select certificate type</option>
               <option value="of participation">Certificate of Participation</option>
               <option value="of completion">Certificate of Completion</option>
@@ -788,7 +812,7 @@
         <div class="input-row">
           <div class="input-group">
             <label for="logo">Organisation Logo (.png)</label>
-            <input id="logo" name="logo" type="file" accept=".png" />
+            <input id="logo" name="logo" type="file" accept=".png" required />
           </div>
 
           <div class="input-group">
@@ -809,8 +833,8 @@
         
         <div class="input-row">
           <div class="input-group">
-            <label for="Organizer1Desig">Organizer 1 Designation</label>
-            <input id="Organizer1Desig" name="Organizer1Desig" type="text" required placeholder="Enter designation" />
+            <label for="organizer1Desig">Organizer 1 Designation</label>
+            <input bind:value={organizer1Desig} id="organizer1Desig" name="organizer1Desig" type="text" placeholder="Enter designation" required  />
           </div>
 
           <div class="input-group">
@@ -821,8 +845,8 @@
 
         <div class="input-row">
           <div class="input-group">
-            <label for="Organizer2Desig">Organizer 2 Designation</label>
-            <input id="Organizer2Desig" name="Organizer2Desig" type="text" required placeholder="Enter designation" />
+            <label for="organizer2Desig">Organizer 2 Designation</label>
+            <input bind:value={organizer2Desig} id="organizer2Desig" name="organizer2Desig" type="text" placeholder="Enter designation" required  />
           </div>
 
           <div class="input-group">
@@ -861,4 +885,3 @@
     </form>
   </div>
 </div>
-{/if}

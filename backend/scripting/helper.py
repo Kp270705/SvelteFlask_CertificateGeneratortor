@@ -7,23 +7,23 @@ def formDataHelper(textData, filePathData):
 
     # text Data: 
     eventname = textData['eventName']
-    orgName = textData['OrgName']
+    orgName = textData['organizationName']
     certType = textData['certificateType']
     certChoice = textData['certificate_choice']
-    organizer1_desig = textData['Organizer1Desig']
-    organizer2_desig = textData['Organizer2Desig']
+    organizer1Desig = textData['organizer1Desig']
+    organizer2Desig = textData['organizer2Desig']
     action = textData['action']
 
     
     # file paths:
     logo1 = filePathData['logo']
     logo2 = filePathData['logo2']
-    organizer1_sign = filePathData['organizer1']
-    organizer2_sign = filePathData['organizer2']
+    organizer1Sign = filePathData['organizer1']
+    organizer2Sign = filePathData['organizer2']
     csv = filePathData['csv']
 
     csvData = processFile(csv[0])
-    zipPath = processData(csvData, eventname, orgName, certType, organizer1_desig, organizer2_desig, certChoice, action, logo1, logo2, organizer1_sign, organizer2_sign)
+    zipPath = processData(csvData, eventname, orgName, certType, organizer1Desig, organizer2Desig, certChoice, action, logo1, logo2, organizer1Sign, organizer2Sign)
     print("\n\n===================================== OUR CONSOLE ENDS HERE ==========================================\n\n\n\n")
     return zipPath
 
