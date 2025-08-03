@@ -21,7 +21,7 @@ def logout():
 
 
 # Login route:
-@auth_bp.route("/login")
+@auth_bp.route("/login", methods=["POST"])
 def login():
     print(f"\nIn User Login")
     data = request.get_json()
@@ -31,9 +31,10 @@ def login():
 
     if user and check_password_hash(user.password, password):
         access_token = create_access_token(identity=str(user.id))
-        print(f"\nUser's name: {email}")
-        print(f"User's password: {user.password}\n")
-        print(f"Access token: {access_token}")
+        # print(f"\nUser's name: {email}")
+        # print(f"User's password: {user.password}\n")
+        # print(f"Access token: {access_token}")
+        session['jwt_token'] = access_token
         
         return {
             'access_token': f"{access_token}",
@@ -48,6 +49,7 @@ def register():
     data = request.get_json()
     email = data['email']
     password = data['password']
+    print(f"\n\temail: {email}")
     hashed_password = generate_password_hash(password)
 
     if not email or not password:
@@ -66,9 +68,10 @@ def register():
 # used to send the JWT token to the frontend
 @auth_bp.route("/token")
 def send_token_to_frontend():
-    jwt_token = request.cookies.get("jwt_token")
+    jwt_token = session.get("jwt_token", "No jwt_token found in session")
     if not jwt_token:
-        return jsonify({"msg": "No token"}), 401
+        # print("\n\tNo-token")
+        return jsonify({"message": "No-token"}), 401
     return jsonify({"jwt_token": jwt_token})
 
 

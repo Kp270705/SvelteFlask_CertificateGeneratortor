@@ -2,11 +2,11 @@ from fpdf import FPDF
 import os
 import shutil
 import datetime as dt
-from PythonTasks.getFonts import FONTS
-from PythonTasks.fileHandle import checkPDFFolderExist
-from PythonTasks.sendingMails import send_bulk_parallel
-from PythonTasks.genZip import zip_folder
-from PythonTasks.Exceptions.handleExceptions import CertificateError
+from scripting.getFonts import FONTS
+from scripting.fileHandle import checkPDFFolderExist
+from scripting.sendingMails import send_bulk_parallel
+from scripting.genZip import zip_folder
+from scripting.Exceptions.handleExceptions import CertificateError
 # import io
 
 def certChoice():

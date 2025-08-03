@@ -4,8 +4,8 @@ from werkzeug.utils import secure_filename
 import os
 
 # importing files: 
-from PythonTasks.helper import formDataHelper
-from PythonTasks.Exceptions.handleExceptions import CertificateError
+from scripting.helper import formDataHelper
+from scripting.Exceptions.handleExceptions import CertificateError
 
 
 # Blueprint for home-page routes
@@ -52,7 +52,7 @@ def _save_file(file_storage, subdir=""):
 # 👇 MAIN FORM HANDLER
 # -----------------------------------------------------------------------------
 
-@home_bp.post("/FormData")
+@home_bp.post("/formData")
 def userFormData():
     print("\n\n\n\n")
     print(f"===================================== OUR CONSOLE STARTS HERE ==========================================")

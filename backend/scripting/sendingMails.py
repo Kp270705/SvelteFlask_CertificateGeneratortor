@@ -4,7 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
-from PythonTasks.passwordsInfo import password3
+from scripting.passwordsInfo import password3
 
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 587

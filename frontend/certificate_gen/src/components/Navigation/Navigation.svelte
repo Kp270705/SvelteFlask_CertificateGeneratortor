@@ -8,7 +8,7 @@
   import Rocket from "../../assets/icons/rocket1.png";
 
   let pages = [
-    { name: "Home", path: "/" },
+    { name: "Home", path: "/home" },
     { name: "About", path: "/about" },
     { name: "Register", path: "/register" },
   ];

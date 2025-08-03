@@ -1,5 +1,5 @@
-from PythonTasks.csvFunc import processFile
-from PythonTasks.manageData import processData
+from scripting.csvFunc import processFile
+from scripting.manageData import processData
 
 
 def formDataHelper(textData, filePathData):

@@ -58,7 +58,7 @@
     }
 
     try {
-      const response = await fetch("http://localhost:5000/home/FormData", {
+      const response = await fetch("http://localhost:5000/home/formData", {
         method: "POST",
         body: formData,
         credentials: "include",

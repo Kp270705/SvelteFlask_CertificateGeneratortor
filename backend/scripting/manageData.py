@@ -1,8 +1,8 @@
-from PythonTasks.csvFunc import processFile
-from PythonTasks.genZip import zip_folder
-from PythonTasks.getPath import get_Choice_data
-from PythonTasks.genPdf import getCertData
-from PythonTasks.designTemplate import templatedesign1_2_3, templatedesign4
+from scripting.csvFunc import processFile
+from scripting.genZip import zip_folder
+from scripting.getPath import get_Choice_data
+from scripting.genPdf import getCertData
+from scripting.designTemplate import templatedesign1_2_3, templatedesign4
 
 
 def getTemplateContentPath(certificateChoice):

@@ -24,6 +24,7 @@ from initResources.jwt import jwt
 # importing blueprints:
 from authentication_bp import auth_bp
 from resources_bp import resources_bp
+from home_bp import home_bp
 
 
 
@@ -93,6 +94,7 @@ def create_app():
 
     app.register_blueprint(auth_bp)
     app.register_blueprint(resources_bp)
+    app.register_blueprint(home_bp)
     return app
 
 

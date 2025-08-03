@@ -1,6 +1,6 @@
 <script>
     import certImg from "../assets/Images/auth/demoCert2.png";
-  export let navigate;
+    import { link } from 'svelte-spa-router';
   // console.log(`From Landing and navigate is: ${navigate}`);
 </script>
 
@@ -72,8 +72,8 @@
       stunning, professional-quality certificates tailored to your needs.
     </p>
     <div class="buttons">
-      <a class="primary" on:click={() => navigate("home")}>Home</a>
-      <a class="secondary" on:click={() => navigate("landing")}>Signout</a>
+      <a use:link href="/home"><button class="px-8 py-3 bg-indigo-600 text-font-medium rounded-lg hover:bg-indigo-transition-colors hover-lift">Home</button></a>
+      <a use:link href="/register"><button class="px-8 py-3 border-2 border-indigo-600 text-indigo-600 font-medium rounded-lg hover:bg-indigo-50 transition-colors hover-lift">Register</button></a>
     </div>
   </div>
 
