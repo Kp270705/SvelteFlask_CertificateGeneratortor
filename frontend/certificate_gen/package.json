@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "dev:network": "vite --host"
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^5.0.3",
@@ -21,6 +22,7 @@
   "dependencies": {
     "flowbite-svelte-blocks": "^2.0.0",
     "flowbite-svelte-illustrations": "^1.0.4",
+    "ngrok": "5.0.0-beta.2",
     "svelte-spa-router": "^4.0.1"
   },
   "pnpm": {

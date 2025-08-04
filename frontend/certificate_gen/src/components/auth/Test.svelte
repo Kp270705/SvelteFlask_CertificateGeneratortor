@@ -1,14 +1,15 @@
 <script>
-  // import static files:
-	import invalid from "../../assets/icons/wrong2.png"
-	import notFound from "../../assets/icons/notFound2.png"
-	import LoginSuccess from "../../assets/icons/loginSuccess.png"
-	import serverNotAvailable1 from "../../assets/icons/serverNotAvailable1.png";
+
+  // import static content:
+	import userAlreadyFound from "../../assets/icons/userFound2.png"
+  import serverNotAvailable from "../../assets/icons/serverNotAvailable2.png";
+  import dataMissing1 from "../../assets/icons/dataMissing1.png";
+
 
   // import svelte-flowbite essentials
   import { Card, Button, Label, Input, Checkbox } from "flowbite-svelte";
 
-  // import svelte essentials
+  // import svelte-flowbite essentials
 	import { push } from 'svelte-spa-router';
 	import { link } from 'svelte-spa-router';
 
@@ -46,66 +47,53 @@
 
       const result = await response.json();
 
-      if (response.status === 404) {
+
+      if (response.status === 400) {
         error = result.message;
         errorDetail = result.description;
         showError = true;
         btnAction = "Register"
         btnRoute = "/register"
-        btnAction2 = "Login"
-        btnRoute2 = "/login"
-        icon = notFound
-        return;
-
-      } else if (response.status === 401) {
-        error = result.message;
-        errorDetail = result.description;
-        showError = true;
-        btnAction = "Login"
-        btnRoute = "/login"
         btnAction2 = null
         btnRoute2 = null
-        icon = invalid
+        icon = dataMissing1
         return;
-      } 
+      }
 
-	  else if (response.status === 200) {
+      else if (response.status === 409) {
         error = result.message;
         errorDetail = result.description;
         showError = true;
-		btnAction = "Next"
-		btnRoute = "/home"
-		btnAction2 = null
-		btnRoute2 = null
-        icon = LoginSuccess
+				btnAction = "Login"
+				btnRoute = "/login"
+				btnAction2 = "Register"
+				btnRoute2 = "/register" 
+        icon = userAlreadyFound
         return;
 
-      }
-
-	  
-	 
-	  else if (!response.ok) {
+      } 
+       
+      else if (!response.ok) {
         throw new Error(result.message || `Server error: ${response.status}`);
       }
 
       console.log("✅ Backend Response:", result);
-      alert("🎉 User login successful!");
+      alert("🎉 User registered successfully!");
       push('/home');
 
     } catch (err) {
-      console.error("❌ Login error:", err);
-      error = "❗ Login Failed";
+      console.error("❌ Register error:", err);
+      error = "❗ Register Failed";
       errorDetail = `${err.message}. Due to unavailability of server.\n\n\nBuy me a coffee, and I will purchase the best hosting platform.`;
       showError = true;
-      btnAction = "Login"
-      btnRoute = "/login"
-      btnAction2 = null
-      btnRoute2 = null
-      icon = serverNotAvailable1
+			btnAction = "Register"
+			btnRoute = "/register"
+			btnAction2 = null
+			btnRoute2 = null
+      icon = serverNotAvailable
+      return 
     }
   }
-
-
 </script>
 
 <!-- Centering container -->
@@ -113,22 +101,18 @@
   <Card class="p-4 sm:p-6 md:p-8 relative w-full max-w-md">
     <div class={`space-y-4 p-6 sm:p-8 md:space-y-6 transition-all duration-300 ${showError ? 'blur-md pointer-events-none' : ''}`}>
       <form class="flex flex-col space-y-6" on:submit={handleSubmit}>
-        <h3 class="text-xl font-medium text-gray-900 dark:text-white">Login in to your account</h3>
+        <h3 class="text-xl font-medium text-gray-900 dark:text-white">Register yourself</h3>
         <Label class="space-y-2">
           <span>Email</span>
-          <Input type="email" name="email" placeholder="name@company.com" />
+          <Input type="email" name="email" placeholder="name@company.com" required />
         </Label>
         <Label class="space-y-2">
           <span>Your password</span>
           <Input type="password" name="password" placeholder="•••••" required />
         </Label>
-        <!-- <div class="flex items-start">
-          <Checkbox>Remember me</Checkbox>
-          <a href="/" class="text-primary-700 dark:text-primary-500 ms-auto text-sm hover:underline">Lost password?</a>
-        </div> -->
-        <Button type="submit" class="w-full">Login to your account</Button>
+        <Button type="submit" class="w-full">Register your account</Button>
         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
-          Not registered? <a use:link href="/register" class="text-primary-700 dark:text-primary-500 hover:underline">Create account</a>
+          Already have an account? <a use:link href="/login" class="text-primary-700 dark:text-primary-500 hover:underline">Login to account</a>
         </div>
       </form>
     </div>

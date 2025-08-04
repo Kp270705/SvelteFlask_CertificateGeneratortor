@@ -12,34 +12,7 @@ from scripting.initialiseValues import jwt_time_period as jwt_period
 # Blueprint for authentication routes
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
-
-# used for logging out the user
-@auth_bp.route("/logout")
-def logout():
-    session.clear()
-    return jsonify({"message": "Logged out successfully"}), 200
-
-
-# Login route:
-@auth_bp.route("/login", methods=["POST"])
-def login():
-    print(f"\nIn User Login")
-    data = request.get_json()
-    email = data['email']
-    password = data['password']
-    user  = User.query.filter_by(email=email).first()
-
-    if user and check_password_hash(user.password, password):
-        access_token = create_access_token(identity=str(user.id))
-        # print(f"\nUser's name: {email}")
-        # print(f"User's password: {user.password}\n")
-        # print(f"Access token: {access_token}")
-        session['jwt_token'] = access_token
-        
-        return {
-            'access_token': f"{access_token}",
-        }, 200
-    return {'message': "Invalid credentials"}, 401
+# =========================== ROUTES  ===========================
 
 
 # Register route:
@@ -49,31 +22,75 @@ def register():
     data = request.get_json()
     email = data['email']
     password = data['password']
-    print(f"\n\temail: {email}")
     hashed_password = generate_password_hash(password)
-
-    if not email or not password:
-        return {'message': "Username or password missing"}, 400
     
     if User.query.filter_by(email=email).first():
-        return {'message':"User already exists"}, 400
+        return {
+            'message':      "🚴‍♂️ User already exist",
+            'description':  "An account with this email already exists. Enter unique credentials, or login to your account🫣"
+        }, 409
     
     newUser = User(email=email, password=hashed_password)
     db.session.add(newUser)
     db.session.commit()
-    return {'message': "✌️🥳 User registered successfully."}, 201
+    return {
+        'message': "✌️🥳 Registration successful.",
+        'description': "✌️🥳 User registered successfully."
+    }, 200
+
+
+# Login route:
+@auth_bp.route("/login", methods=["POST"])
+def login():
+
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+
+    # Check if user exists
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return {
+            'message': "🙅 User not found",
+            'description': "User with these credentials not exist. Register yourself or re-login 😇"
+        }, 404
+
+    # Check password
+    if check_password_hash(user.password, password):
+        access_token = create_access_token(identity=str(user.id))
+        session['jwt_token'] = access_token
+        return {
+            'message': "✌️🥳 Login Successfully",
+            'description': "✌️🥳 User Login successfully.",
+            'access_token': f"{access_token}",
+        }, 200
+
+    # Wrong password
+    return {
+        'message': "🔐 Invalid credentials",
+        'description': '''You enter wrong password. Login again😇'''
+    }, 401
+
+
+# used for logging out the user
+@auth_bp.route("/logout")
+def logout():
+    if not session:
+        print(f"session already cleared.")
+    session.clear()
+    jwt_token = session.get("jwt_token", "No jwt_token found in session")
+    print(f"\n\n\tSession is clear. {jwt_token}")
+    return jsonify({"message": "Logged out successfully"}), 200
 
 
 
 # used to send the JWT token to the frontend
 @auth_bp.route("/token")
 def send_token_to_frontend():
-    jwt_token = session.get("jwt_token", "No jwt_token found in session")
-    if not jwt_token:
-        # print("\n\tNo-token")
-        return jsonify({"message": "No-token"}), 401
-    return jsonify({"jwt_token": jwt_token})
-
+    jwt_token = session.get("jwt_token", "No-Token")
+    if jwt_token == "No-Token":
+        return jsonify({"message": "No-Token"}), 401
+    return jsonify({"jwt_token": jwt_token}), 200
 
 
 # use to fetch profile information
