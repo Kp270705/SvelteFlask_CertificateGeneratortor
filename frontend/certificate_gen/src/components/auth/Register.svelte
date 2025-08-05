@@ -3,8 +3,9 @@
   // import static content:
 	import userAlreadyFound from "../../assets/icons/userFound1.png"
 	import Registered from "../../assets/icons/registered1.jpeg"
-  import serverNotAvailable1 from "../../assets/icons/serverNotAvailable2.png";
+  import serverNotAvailable1 from "../../assets/icons/serverNotAvailable1.png";
   import dataMissing1 from "../../assets/icons/dataMissing1.png";
+  import routesType from "../../config/backend_routes.js";
 
 
   // import svelte-flowbite essentials
@@ -37,7 +38,7 @@
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("http://localhost:5000/auth/register", {
+      const response = await fetch(`${routesType.current_route}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -47,7 +48,6 @@
       });
 
       const result = await response.json();
-
 
       if (response.status === 400) {
         error = result.message;
@@ -65,10 +65,10 @@
         error = result.message;
         errorDetail = result.description;
         showError = true;
-		btnAction = "Login"
-		btnRoute = "/login"
-		btnAction2 = "Register"
-		btnRoute2 = "/register" 
+        btnAction = "Login"
+        btnRoute = "/login"
+        btnAction2 = "Register"
+        btnRoute2 = "/register" 
         icon = userAlreadyFound
         return;
 
@@ -78,10 +78,10 @@
         error = result.message;
         errorDetail = result.description;
         showError = true;
-		btnAction = "Login"
-		btnRoute = "/login"
-		btnAction2 = null
-		btnRoute2 = null
+        btnAction = "Login"
+        btnRoute = "/login"
+        btnAction2 = null
+        btnRoute2 = null
         icon = Registered
         return;
 
@@ -90,7 +90,6 @@
 	  else if (!response.ok) {
         throw new Error(result.message || `Server error: ${response.status}`);
       }
-
 
     } catch (err) {
       console.error("❌ Register error:", err);
@@ -105,7 +104,10 @@
       return 
     }
   }
+
+
 </script>
+
 
 <!-- Centering container -->
 <div class="flex items-center justify-center h-full p-4 mt-25">

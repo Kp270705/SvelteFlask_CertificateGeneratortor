@@ -27,8 +27,5 @@
   };
 </script>
 
-<!-- {#if isLogin==null} -->
-<!-- <Router {Login} /> -->
-<!-- {:else} -->
+
 <Router {routes} />
-<!-- {/if} -->

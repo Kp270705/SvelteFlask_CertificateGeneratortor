@@ -1,0 +1,5 @@
+{
+    "local_route":"http://127.0.0.1:5000",
+    "ngrock_route":"https://7347b134f192.ngrok-free.app",
+    "other_route":"https://otherRoute.com"
+} 

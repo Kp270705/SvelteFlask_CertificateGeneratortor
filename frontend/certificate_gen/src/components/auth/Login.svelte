@@ -4,6 +4,7 @@
 	import notFound from "../../assets/icons/notFound2.png"
 	import LoginSuccess from "../../assets/icons/loginSuccess.png"
 	import serverNotAvailable1 from "../../assets/icons/serverNotAvailable1.png";
+  import routesType from "../../config/backend_routes.js";
 
   // import svelte-flowbite essentials
   import { Card, Button, Label, Input, Checkbox } from "flowbite-svelte";
@@ -35,7 +36,7 @@
     const data = Object.fromEntries(formData.entries());
 
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
+      const response = await fetch(`${routesType.current_route}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
@@ -73,24 +74,18 @@
         error = result.message;
         errorDetail = result.description;
         showError = true;
-		btnAction = "Next"
-		btnRoute = "/home"
-		btnAction2 = null
-		btnRoute2 = null
+        btnAction = "Next"
+        btnRoute = "/home"
+        btnAction2 = null
+        btnRoute2 = null
         icon = LoginSuccess
         return;
 
       }
-
-	  
 	 
-	  else if (!response.ok) {
-        throw new Error(result.message || `Server error: ${response.status}`);
-      }
-
-      console.log("✅ Backend Response:", result);
-      alert("🎉 User login successful!");
-      push('/home');
+    else if (!response.ok) {
+      throw new Error(result.message || `Server error: ${response.status}`);
+    }
 
     } catch (err) {
       console.error("❌ Login error:", err);
@@ -108,6 +103,7 @@
 
 </script>
 
+
 <!-- Centering container -->
 <div class="flex items-center justify-center h-full p-4 mt-25">
   <Card class="p-4 sm:p-6 md:p-8 relative w-full max-w-md">
@@ -122,10 +118,6 @@
           <span>Your password</span>
           <Input type="password" name="password" placeholder="•••••" required />
         </Label>
-        <!-- <div class="flex items-start">
-          <Checkbox>Remember me</Checkbox>
-          <a href="/" class="text-primary-700 dark:text-primary-500 ms-auto text-sm hover:underline">Lost password?</a>
-        </div> -->
         <Button type="submit" class="w-full">Login to your account</Button>
         <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
           Not registered? <a use:link href="/register" class="text-primary-700 dark:text-primary-500 hover:underline">Create account</a>

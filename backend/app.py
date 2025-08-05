@@ -59,6 +59,7 @@ def create_app():
      origins=["http://localhost:5173"],
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "OPTIONS"])
+    
     # CORS(app, supports_credentials=True)  # allow any origin (good for dev – tighten in prod)
     # CORS(app, resources={r"/api/*": {"origins": "https://your-svelte-domain.com"}}) # this is for production.
     

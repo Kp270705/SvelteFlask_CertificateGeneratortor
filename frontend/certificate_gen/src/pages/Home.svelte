@@ -9,6 +9,7 @@
   import demoCertImg2 from "../assets/Images/Home/demoCertImg2.png";
   import demoCertImg3 from "../assets/Images/Home/demoCertImg3.png";
   import demoCertImg4 from "../assets/Images/Home/demoCertImg4.png";
+  import routesType from '../config/backend_routes.js';
 
   const demoImg = [demoCertImg1, demoCertImg2, demoCertImg3, demoCertImg4, demoCertImg2];
 
@@ -58,7 +59,7 @@
     }
 
     try {
-      const response = await fetch("http://localhost:5000/home/formData", {
+      const response = await fetch(`${routesType.current_route}/home/formData`, {
         method: "POST",
         body: formData,
         credentials: "include",

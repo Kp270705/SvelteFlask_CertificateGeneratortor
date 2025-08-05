@@ -1,6 +1,7 @@
 <script>
-  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger } from "flowbite-svelte";
+  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, DarkMode } from "flowbite-svelte";
   import { link } from 'svelte-spa-router';
+  import { location } from 'svelte-spa-router';
 
   // importing components: 
   import Darkmode from "../../components/Darkmode/Darkmode.svelte";
@@ -15,6 +16,15 @@
     { name: "About", path: "/about" },
     { name: "Register", path: "/register" },
   ];
+
+
+  let dropDownRoute = '';
+
+  $: {
+    const currentRoute = $location;
+    console.log(`current route: ${currentRoute}`);
+    dropDownRoute = currentRoute === '/home' ? "Sign-Out" : "Sign-In";
+  }
 
 </script>
 
@@ -33,8 +43,10 @@
       </NavLi>
     {/each}
     <NavLi>
+        <NavDropdown {dropDownRoute} />
+    </NavLi>
+    <NavLi class="mx-5">
         <Darkmode />
-        <NavDropdown />
-      </NavLi>
+    </NavLi>
   </NavUl>
 </Navbar>

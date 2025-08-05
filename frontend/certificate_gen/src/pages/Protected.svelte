@@ -1,14 +1,32 @@
-<!-- <script>
-  import { onMount } from 'svelte';
-  import Home from './Home.svelte'; // or wherever your Home.svelte is located
+<script>
+
   import { push } from 'svelte-spa-router';
+  import { onMount } from 'svelte';
+  import Home from './Home.svelte';
+  import Error from '../components/Card/Error.svelte';
+  import accessDenied from "../assets/icons/accessDenied1.png";
+  import routesType from '../config/backend_routes.js';
 
   let isAuthorized = false;
   let loading = true;
 
+  // Error card state
+  let showError = false;
+  let error = '';
+  let errorDetail = '';
+  let icon = '';
+  let btnAction = '';
+  let btnRoute = '';
+  let btnAction2 = '';
+  let btnRoute2 = '';
+
+  const closeError = () => {
+    showError = false;
+  };
+
   onMount(async () => {
     try {
-      const res = await fetch('http://localhost:5000/auth/token', {
+      const res = await fetch(`${routesType.current_route}/auth/token`, {
         credentials: 'include'  // include cookies if any
       });
 
@@ -30,14 +48,14 @@
       loading = false;
     }
   });
-</script> -->
+</script>
 
-<script>
+<!-- <script>
   import { onMount } from 'svelte';
   import Home from './Home.svelte';
   import Error from '../components/Card/Error.svelte';
-  // import notFound from "../assets/icons/notFound1.png";
-  import notFound from "../assets/icons/accessDenied1.png";
+  import accessDenied from "../assets/icons/accessDenied1.png";
+  import routesType from '../config/backend_routes.js';
 
   let isAuthorized = false;
   let loading = true;
@@ -58,25 +76,27 @@
 
   onMount(async () => {
     try {
-      const response = await fetch('http://localhost:5000/auth/token', {
+      const response = await fetch(`${routesType.current_route}/auth/token`, {
         credentials: 'include'
       });
 
       const data = await response.json();
 
-      if (data.message !== "No-Token") {
+      // if (data.message !== "No-Token") {
+      if (response.status === 200) {
         isAuthorized = true;
-        console.log('✅ User authenticated');
+        console.log('✅ User authorized');
+        console.log(`${data.jwt_token}`);
       } else {
         error = "Access Denied";
         errorDetail = "No valid session token found. Please login to continue.";
-        icon = notFound;
+        icon = accessDenied;
         btnAction = "Login";
         btnRoute = "/login";
         btnAction2 = null
         btnRoute2 = null
         showError = true;
-      }
+      } 
 
     } catch (err) {
       console.error("❌ Token check failed", err);
@@ -92,17 +112,8 @@
       loading = false;
     }
   });
-</script>
+</script> -->
 
-
-
-<!-- {#if loading}
-  <p class="text-center">Checking authentication...</p>
-{:else}
-  {#if isAuthorized}
-    <Home />
-  {/if}
-{/if} -->
 
 
 {#if loading}
