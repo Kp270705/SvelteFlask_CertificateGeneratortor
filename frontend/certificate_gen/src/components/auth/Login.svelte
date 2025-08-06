@@ -1,21 +1,24 @@
+<!-- Login svelte -->
+
 <script>
   // import static files:
-	import invalid from "../../assets/icons/wrong2.png"
-	import notFound from "../../assets/icons/notFound2.png"
-	import LoginSuccess from "../../assets/icons/loginSuccess.png"
+	import invalid from "../../assets/icons/wrong.png"
+	import notFound from "../../assets/icons/notFoundCat.png"
+	import LoginSuccess from "../../assets/icons/loginSuccessCat.png"
 	import serverNotAvailable1 from "../../assets/icons/serverNotAvailable1.png";
   import routesType from "../../config/backend_routes.js";
-
+  import iconChoice from "../../config/iconChoice";
+  
   // import svelte-flowbite essentials
   import { Card, Button, Label, Input, Checkbox } from "flowbite-svelte";
-
+  
   // import svelte essentials
 	import { push } from 'svelte-spa-router';
 	import { link } from 'svelte-spa-router';
-
+  
   // import components:
 	import Error from '../Card/Error.svelte';
-
+  import Astronaut from "../../assets/svelteIcons/Astronaut.svelte";
 
 	// define state variables for error defining:
 	let showError = $state(false);
@@ -25,7 +28,12 @@
 	let btnAction2 = $state('');
 	let btnRoute = $state('');
 	let btnRoute2 = $state(null);
-	let icon = $state('');
+	let iconType = $state();
+
+  let iconInfo = $state({
+    "choice": iconChoice,
+    "type": '',
+  })
 
 	// handle login:
 	async function handleSubmit(e) {
@@ -55,7 +63,7 @@
         btnRoute = "/register"
         btnAction2 = "Login"
         btnRoute2 = "/login"
-        icon = notFound
+        iconInfo.type = "notfound"
         return;
 
       } else if (response.status === 401) {
@@ -66,7 +74,7 @@
         btnRoute = "/login"
         btnAction2 = null
         btnRoute2 = null
-        icon = invalid
+        iconInfo.type = "invalid"
         return;
       } 
 
@@ -74,11 +82,11 @@
         error = result.message;
         errorDetail = result.description;
         showError = true;
-        btnAction = "Next"
-        btnRoute = "/home"
-        btnAction2 = null
-        btnRoute2 = null
-        icon = LoginSuccess
+        btnAction = "Next";
+        btnRoute = "/home";
+        btnAction2 = null;
+        btnRoute2 = null;
+        iconInfo.type = "login_success"
         return;
 
       }
@@ -99,8 +107,6 @@
       icon = serverNotAvailable1
     }
   }
-
-
 </script>
 
 
@@ -108,7 +114,7 @@
 <div class="flex items-center justify-center h-full p-4 mt-25">
   <Card class="p-4 sm:p-6 md:p-8 relative w-full max-w-md">
     <div class={`space-y-4 p-6 sm:p-8 md:space-y-6 transition-all duration-300 ${showError ? 'blur-md pointer-events-none' : ''}`}>
-      <form class="flex flex-col space-y-6" on:submit={handleSubmit}>
+      <form class="flex flex-col space-y-6" onsubmit={handleSubmit}>
         <h3 class="text-xl font-medium text-gray-900 dark:text-white">Login in to your account</h3>
         <Label class="space-y-2">
           <span>Email</span>
@@ -132,9 +138,9 @@
           {errorDetail} 
           {btnAction} 
           {btnAction2} 
-          {icon} 
           {btnRoute} 
-          {btnRoute2} 
+          {btnRoute2}
+          {iconInfo} 
           close={() => {
             showError = false;
             error = '';
@@ -143,7 +149,10 @@
             btnAction2 = '';
             btnRoute = '';
             btnRoute2 = '';
-            icon = '';
+            iconInfo = {
+              "choice":'',
+              "type":''
+            };
           }
         } />
       </div>

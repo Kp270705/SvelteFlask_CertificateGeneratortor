@@ -63,6 +63,62 @@
 
 </script>
 
+
+
+<div class="acknowledgement-page">
+    <div class="floating-elements">
+        <div class="floating-element">🎉</div>
+        <div class="floating-element">✨</div>
+        <div class="floating-element">🏆</div>
+        <div class="floating-element">🎊</div>
+        <div class="floating-element">🎈</div>
+        <div class="floating-element">⭐</div>
+    </div>
+    
+    <div class="content-wrapper">
+        <h1 class="success-title">
+            🎉 <span class="title-white">Certificates Created</span> <span class="title-yellow">Successfully!</span>
+        </h1>
+        <p class="success-subtitle">
+            Hi <span class="username">{userName}</span>, your certificates have been generated with success!
+        </p>
+        
+        <div class="gif-container">
+            <img src="{Hurrah}" alt="Success celebration" class="gif-image" />
+        </div>
+
+        <div class="options-container">
+            <div class="option-card" class:selected={selectedOptions.download}>
+                <label class="option-label">
+                    <input 
+                        type="checkbox" 
+                        bind:checked={selectedOptions.download} 
+                        class="option-checkbox"
+                    />
+                    <span class="option-icon">📦</span>
+                    <span class="option-text">Download ZIP of all certificates</span>
+                </label>
+            </div>
+            
+            <div class="option-card" class:selected={selectedOptions.send}>
+                <label class="option-label">
+                    <input 
+                        type="checkbox" 
+                        bind:checked={selectedOptions.send} 
+                        class="option-checkbox"
+                    />
+                    <span class="option-icon">✉️</span>
+                    <span class="option-text">Send certificates to recipients</span>
+                </label>
+            </div>
+            <!-- <button on:click={goBack} class="proceed-btn">⬅️ Back</button>  -->
+
+        </div>
+
+        <button class="proceed-btn" on:click={handleSubmit}> Proceed </button>
+    </div>
+</div>
+
 <style>
     /* Reset any potential margin/padding constraints */
     :global(body) {
@@ -435,56 +491,6 @@
     }
 </style>
 
-<div class="acknowledgement-page">
-    <div class="floating-elements">
-        <div class="floating-element">🎉</div>
-        <div class="floating-element">✨</div>
-        <div class="floating-element">🏆</div>
-        <div class="floating-element">🎊</div>
-        <div class="floating-element">🎈</div>
-        <div class="floating-element">⭐</div>
-    </div>
-    
-    <div class="content-wrapper">
-        <h1 class="success-title">
-            🎉 <span class="title-white">Certificates Created</span> <span class="title-yellow">Successfully!</span>
-        </h1>
-        <p class="success-subtitle">
-            Hi <span class="username">{userName}</span>, your certificates have been generated with success!
-        </p>
-        
-        <div class="gif-container">
-            <img src="{Hurrah}" alt="Success celebration" class="gif-image" />
-        </div>
 
-        <div class="options-container">
-            <div class="option-card" class:selected={selectedOptions.download}>
-                <label class="option-label">
-                    <input 
-                        type="checkbox" 
-                        bind:checked={selectedOptions.download} 
-                        class="option-checkbox"
-                    />
-                    <span class="option-icon">📦</span>
-                    <span class="option-text">Download ZIP of all certificates</span>
-                </label>
-            </div>
-            
-            <div class="option-card" class:selected={selectedOptions.send}>
-                <label class="option-label">
-                    <input 
-                        type="checkbox" 
-                        bind:checked={selectedOptions.send} 
-                        class="option-checkbox"
-                    />
-                    <span class="option-icon">✉️</span>
-                    <span class="option-text">Send certificates to recipients</span>
-                </label>
-            </div>
-            <!-- <button on:click={goBack} class="proceed-btn">⬅️ Back</button>  -->
 
-        </div>
 
-        <button class="proceed-btn" on:click={handleSubmit}> Proceed </button>
-    </div>
-</div>

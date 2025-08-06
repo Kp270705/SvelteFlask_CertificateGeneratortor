@@ -1,3 +1,9 @@
+<svelte:head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/base16/google-dark.min.css" />
+</svelte:head>
+
+
+
 <script>
   import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, DarkMode } from "flowbite-svelte";
   import { link } from 'svelte-spa-router';
@@ -12,9 +18,10 @@
   import CertGen from "../../assets/icons/certGen3.png";
 
   let pages = [
-    { name: "Home", path: "/home" },
-    { name: "About", path: "/about" },
-    { name: "Register", path: "/register" },
+    { name: "Home",             path: "/home" },
+    { name: "About",            path: "/about" },
+    { name: "Register",         path: "/register" },
+    { name: "Texteditor",       path: "/textedit"},
   ];
 
 

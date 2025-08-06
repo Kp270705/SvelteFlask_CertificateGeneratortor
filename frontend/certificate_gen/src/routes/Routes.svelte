@@ -14,6 +14,7 @@
   import Acknowledgement from '../pages/Acknowledgement.svelte';
   import Landing from '../pages/Landing.svelte';
   import Protected from '../pages/Protected.svelte';
+  import Texteditor from '../pages/Texteditor.svelte';
 
   // export let isLogin
   const routes = {
@@ -24,6 +25,7 @@
     '/login': Login,
     '/card': TestCard,
     '/acknowledgement': Acknowledgement, // <-- Route added
+    '/textedit': Texteditor,
   };
 </script>
 

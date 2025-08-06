@@ -1,46 +1,38 @@
-
-# import os
-# from pathlib import Path
-# from werkzeug.utils import secure_filename
-# from flask import Flask, request, jsonify, send_file, session
 from flask import Flask
 from flask_cors import CORS
 from datetime import timedelta
 # import secrets
 
 # importing files: 
-# from PythonTasks.helper import formDataHelper
-# from PythonTasks.Exceptions.handleExceptions import CertificateError
 from scripting.genString import generate_random_string
 from scripting.initialiseValues import jwt_time_period as jwt_period
 from resources_bp.routes import register_jwt_error_handlers
 
-
 # importing resources:
 from initResources.db import db
 from initResources.jwt import jwt
-
 
 # importing blueprints:
 from authentication_bp import auth_bp
 from resources_bp import resources_bp
 from home_bp import home_bp
 
-
 # -----------------------------------------------------------------------------
 # FLASK INIT
 # -----------------------------------------------------------------------------
 
-
 def create_app():
-    pass
-
     app = Flask(__name__)
-    app.secret_key = generate_random_string(32)
+    app.config['SECRET_KEY'] = generate_random_string(32)
     app.config['JWT_SECRET_KEY'] = generate_random_string(32)
 
+    # # Session cookie configuration for CORS
+    app.config['SESSION_COOKIE_SAMESITE'] = 'None'
+    app.config['SESSION_COOKIE_SECURE'] = True
+    app.config['SESSION_COOKIE_HTTPONLY'] = False  # Allow JS access if needed
+    app.config['SESSION_COOKIE_DOMAIN'] = None  # Allow cross-domain
+    
     jwt_time_period = jwt_period
-
     if "seconds" in jwt_time_period:
         app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(seconds=int(jwt_time_period.split()[0]))
     elif "minutes" in jwt_time_period:
@@ -59,11 +51,6 @@ def create_app():
      origins=["http://localhost:5173"],
      allow_headers=["Content-Type", "Authorization"],
      methods=["GET", "POST", "OPTIONS"])
-    
-    # CORS(app, supports_credentials=True)  # allow any origin (good for dev – tighten in prod)
-    # CORS(app, resources={r"/api/*": {"origins": "https://your-svelte-domain.com"}}) # this is for production.
-    
-    
 
     # initialize db :
     db.init_app(app)
@@ -75,9 +62,7 @@ def create_app():
     # register JWT error handlers
     register_jwt_error_handlers()
 
-
     # registering blueprints:
-
     app.register_blueprint(auth_bp)
     app.register_blueprint(resources_bp)
     app.register_blueprint(home_bp)

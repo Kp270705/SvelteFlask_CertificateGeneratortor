@@ -1,3 +1,5 @@
+<!-- Protected.svelte:  -->
+
 <script>
 
   import { push } from 'svelte-spa-router';
@@ -27,6 +29,7 @@
   onMount(async () => {
     try {
       const res = await fetch(`${routesType.current_route}/auth/token`, {
+        method:"GET",
         credentials: 'include'  // include cookies if any
       });
 
@@ -49,71 +52,6 @@
     }
   });
 </script>
-
-<!-- <script>
-  import { onMount } from 'svelte';
-  import Home from './Home.svelte';
-  import Error from '../components/Card/Error.svelte';
-  import accessDenied from "../assets/icons/accessDenied1.png";
-  import routesType from '../config/backend_routes.js';
-
-  let isAuthorized = false;
-  let loading = true;
-
-  // Error card state
-  let showError = false;
-  let error = '';
-  let errorDetail = '';
-  let icon = '';
-  let btnAction = '';
-  let btnRoute = '';
-  let btnAction2 = '';
-  let btnRoute2 = '';
-
-  const closeError = () => {
-    showError = false;
-  };
-
-  onMount(async () => {
-    try {
-      const response = await fetch(`${routesType.current_route}/auth/token`, {
-        credentials: 'include'
-      });
-
-      const data = await response.json();
-
-      // if (data.message !== "No-Token") {
-      if (response.status === 200) {
-        isAuthorized = true;
-        console.log('✅ User authorized');
-        console.log(`${data.jwt_token}`);
-      } else {
-        error = "Access Denied";
-        errorDetail = "No valid session token found. Please login to continue.";
-        icon = accessDenied;
-        btnAction = "Login";
-        btnRoute = "/login";
-        btnAction2 = null
-        btnRoute2 = null
-        showError = true;
-      } 
-
-    } catch (err) {
-      console.error("❌ Token check failed", err);
-      error = "Authentication Error";
-      errorDetail = "Could not verify login session. Try again later.";
-      icon = notFound;
-      btnAction = "Retry Login";
-      btnRoute = "/login";
-      btnAction2 = null
-      btnRoute2 = null
-      showError = true;
-    } finally {
-      loading = false;
-    }
-  });
-</script> -->
-
 
 
 {#if loading}

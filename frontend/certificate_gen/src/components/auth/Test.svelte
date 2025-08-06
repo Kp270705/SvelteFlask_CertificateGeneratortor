@@ -1,7 +1,7 @@
 <script>
 
   // import static content:
-	import userAlreadyFound from "../../assets/icons/userFound2.png"
+	import userAlreadyFound from "../../assets/icons/existingUserFoundCat.png"
   import serverNotAvailable from "../../assets/icons/serverNotAvailable2.png";
   import dataMissing1 from "../../assets/icons/dataMissing1.png";
 

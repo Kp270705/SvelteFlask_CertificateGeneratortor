@@ -1,4 +1,4 @@
-from flask import Blueprint, make_response, jsonify, session, request, redirect
+from flask import Blueprint, make_response, jsonify, session, request, redirect, make_response
 from flask_jwt_extended import create_access_token
 from urllib.parse import urlencode
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -26,16 +26,16 @@ def register():
     
     if User.query.filter_by(email=email).first():
         return {
-            'message':      "🚴‍♂️ User already exist",
-            'description':  "An account with this email already exists. Enter unique credentials, or login to your account🫣"
+            'message':      "🚴‍♂️ This user already exist",
+            'description':  "An account with this email already exist. Enter unique credentials, or login to your account🫣"
         }, 409
     
     newUser = User(email=email, password=hashed_password)
     db.session.add(newUser)
     db.session.commit()
     return {
-        'message': "✌️🥳 Registration successful.",
-        'description': "✌️🥳 User registered successfully."
+        'message': "🥳 Registration successful",
+        'description': "🥳 User registered successfully."
     }, 200
 
 
@@ -59,8 +59,7 @@ def login():
     if check_password_hash(user.password, password):
         access_token = create_access_token(identity=str(user.id))
         session['jwt_token'] = access_token
-        print(f"Token created: \n\t{access_token}\n\n\tand stored in session.")
-        print(f"\n\tSession: {dict(session)}")
+        print(f"\n\nIn login, token is stored.\n{session['jwt_token']}")
         return {
             'message': "✌️🥳 Login Successfully",
             'description': "✌️🥳 User Login successfully.",
@@ -80,8 +79,6 @@ def logout():
     if not session:
         print(f"session already cleared.")
     session.clear()
-    jwt_token = session.get("jwt_token", "No jwt_token found in session")
-    print(f"\n\n\tCalling from log-out. Session is clear. {jwt_token}")
     return jsonify({"message": "Logged out successfully"}), 200
 
 
@@ -89,12 +86,9 @@ def logout():
 # used to send the JWT token to the frontend
 @auth_bp.route("/token")
 def send_token_to_frontend():
-    print("\n\n\tin token")
-    print(f"Session: {dict(session)}")
-    jwt_token = session.get('jwt_token', 'No-Token')
-    print(f"Token is: {jwt_token}")
+    jwt_token = session.get("jwt_token", "No-Token")
+    print(f"\n\nIn token and our token is:\n{jwt_token}")
     if jwt_token == "No-Token":
-        print(f"No-Token")
         return jsonify({"message": "No-Token"}), 401
     return jsonify({"jwt_token": jwt_token}), 200
 
@@ -119,3 +113,8 @@ def profile():
             "jwt_time_period": jwt_time_period,
         }
     )
+
+
+# =========================================================
+
+

@@ -1,8 +1,10 @@
 <script>
 
   // import static content:
-	import userAlreadyFound from "../../assets/icons/userFound1.png"
-	import Registered from "../../assets/icons/registered1.jpeg"
+	import userAlreadyFound from "../../assets/icons/existingUserFoundCat.png"
+
+	import Registered from "../../assets/icons/registered2.png"
+	// import Registered from "../../assets/icons/registeredCat.png"
   import serverNotAvailable1 from "../../assets/icons/serverNotAvailable1.png";
   import dataMissing1 from "../../assets/icons/dataMissing1.png";
   import routesType from "../../config/backend_routes.js";
@@ -49,19 +51,7 @@
 
       const result = await response.json();
 
-      if (response.status === 400) {
-        error = result.message;
-        errorDetail = result.description;
-        showError = true;
-        btnAction = "Register"
-        btnRoute = "/register"
-        btnAction2 = null
-        btnRoute2 = null
-        icon = dataMissing1
-        return;
-      }
-
-      else if (response.status === 409) {
+      if (response.status === 409) {
         error = result.message;
         errorDetail = result.description;
         showError = true;

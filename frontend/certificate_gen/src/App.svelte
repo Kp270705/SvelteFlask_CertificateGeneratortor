@@ -3,8 +3,6 @@
   import Navigation from "./components/Navigation/Navigation.svelte";
   import Routes from "./routes/Routes.svelte";
 
-
-
 </script>
 
 <Navigation/>
