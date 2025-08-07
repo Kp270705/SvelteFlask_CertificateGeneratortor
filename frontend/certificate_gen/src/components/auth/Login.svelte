@@ -1,24 +1,19 @@
-<!-- Login svelte -->
+<!-- Login.svelte -->
 
 <script>
   // import static files:
-	import invalid from "../../assets/icons/wrong.png"
-	import notFound from "../../assets/icons/notFoundCat.png"
-	import LoginSuccess from "../../assets/icons/loginSuccessCat.png"
-	import serverNotAvailable1 from "../../assets/icons/serverNotAvailable1.png";
   import routesType from "../../config/backend_routes.js";
-  import iconChoice from "../../config/iconChoice";
   
-  // import svelte-flowbite essentials
+  // import sv-ui essentials
   import { Card, Button, Label, Input, Checkbox } from "flowbite-svelte";
+  import { Animate } from 'svelte-animate';
   
   // import svelte essentials
 	import { push } from 'svelte-spa-router';
 	import { link } from 'svelte-spa-router';
   
   // import components:
-	import Error from '../Card/Error.svelte';
-  import Astronaut from "../../assets/svelteIcons/Astronaut.svelte";
+	import Error from '../Card/authCard.svelte';
 
 	// define state variables for error defining:
 	let showError = $state(false);
@@ -29,11 +24,7 @@
 	let btnRoute = $state('');
 	let btnRoute2 = $state(null);
 	let iconType = $state();
-
-  let iconInfo = $state({
-    "choice": iconChoice,
-    "type": '',
-  })
+	let jwt_token = $state('');
 
 	// handle login:
 	async function handleSubmit(e) {
@@ -63,10 +54,12 @@
         btnRoute = "/register"
         btnAction2 = "Login"
         btnRoute2 = "/login"
-        iconInfo.type = "notfound"
+        iconType = "userNotFound"
         return;
 
-      } else if (response.status === 401) {
+      } 
+
+      else if (response.status === 401) {
         error = result.message;
         errorDetail = result.description;
         showError = true;
@@ -74,26 +67,30 @@
         btnRoute = "/login"
         btnAction2 = null
         btnRoute2 = null
-        iconInfo.type = "invalid"
+        iconType = "wrongDetails"
         return;
       } 
 
-	  else if (response.status === 200) {
-        error = result.message;
-        errorDetail = result.description;
-        showError = true;
-        btnAction = "Next";
-        btnRoute = "/home";
-        btnAction2 = null;
-        btnRoute2 = null;
-        iconInfo.type = "login_success"
-        return;
+      else if (response.status === 200) {
+          error = result.message;
+          errorDetail = result.description;
+          showError = true;
+          btnAction = "Next";
+          btnRoute = "/home";
+          btnAction2 = null;
+          btnRoute2 = null;
+          iconType = "loginSuccess"
+          jwt_token = result.access_token
+          localStorage.setItem("jwt_token", jwt_token);
 
+
+          return;
       }
 	 
-    else if (!response.ok) {
-      throw new Error(result.message || `Server error: ${response.status}`);
-    }
+      else if (!response.ok) {
+        throw new Error(result.message || `Server error: ${response.status}`);
+      }
+
 
     } catch (err) {
       console.error("❌ Login error:", err);
@@ -104,10 +101,11 @@
       btnRoute = "/login"
       btnAction2 = null
       btnRoute2 = null
-      icon = serverNotAvailable1
+      iconType = "serverNotAvailable"
     }
   }
 </script>
+
 
 
 <!-- Centering container -->
@@ -140,7 +138,7 @@
           {btnAction2} 
           {btnRoute} 
           {btnRoute2}
-          {iconInfo} 
+          {iconType} 
           close={() => {
             showError = false;
             error = '';
@@ -149,10 +147,7 @@
             btnAction2 = '';
             btnRoute = '';
             btnRoute2 = '';
-            iconInfo = {
-              "choice":'',
-              "type":''
-            };
+            iconType = '';
           }
         } />
       </div>

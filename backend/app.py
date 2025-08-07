@@ -44,6 +44,8 @@ def create_app():
     else:
         raise ValueError("Invalid JWT time period format. Use 'seconds', 'minutes', 'hours', or 'days'.")
     
+    print(f"\n\njwt_time Period: {app.config["JWT_ACCESS_TOKEN_EXPIRES"]}")
+    
     app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
     CORS(app,

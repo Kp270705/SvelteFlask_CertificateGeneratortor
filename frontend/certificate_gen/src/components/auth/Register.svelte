@@ -1,24 +1,16 @@
 <script>
-
-  // import static content:
-	import userAlreadyFound from "../../assets/icons/existingUserFoundCat.png"
-
-	import Registered from "../../assets/icons/registered2.png"
-	// import Registered from "../../assets/icons/registeredCat.png"
-  import serverNotAvailable1 from "../../assets/icons/serverNotAvailable1.png";
-  import dataMissing1 from "../../assets/icons/dataMissing1.png";
+  // import static files:
   import routesType from "../../config/backend_routes.js";
 
-
-  // import svelte-flowbite essentials
+  // importing flowbite sv files:
   import { Card, Button, Label, Input, Checkbox } from "flowbite-svelte";
 
-  // import svelte-flowbite essentials
+  // importing sv essentials:
 	import { push } from 'svelte-spa-router';
 	import { link } from 'svelte-spa-router';
 
   // import components:
-	import Error from '../Card/Error.svelte';
+	import Error from '../Card/authCard.svelte';
 
 
 	// define state variables for error defining:
@@ -29,7 +21,7 @@
 	let btnAction2 = $state('');
 	let btnRoute = $state('');
 	let btnRoute2 = $state(null);
-	let icon = $state('');
+	let iconType = $state();
 
 	// handle login:
 	async function handleSubmit(e) {
@@ -59,7 +51,7 @@
         btnRoute = "/login"
         btnAction2 = "Register"
         btnRoute2 = "/register" 
-        icon = userAlreadyFound
+        iconType = "userAlreadyFound"
         return;
 
       } 
@@ -72,7 +64,7 @@
         btnRoute = "/login"
         btnAction2 = null
         btnRoute2 = null
-        icon = Registered
+        iconType = "registerSuccess"
         return;
 
       }
@@ -90,7 +82,7 @@
 			btnRoute = "/register"
 			btnAction2 = null
 			btnRoute2 = null
-      icon = serverNotAvailable1
+      iconType = "serverNotAvailable"
       return 
     }
   }
@@ -103,7 +95,7 @@
 <div class="flex items-center justify-center h-full p-4 mt-25">
   <Card class="p-4 sm:p-6 md:p-8 relative w-full max-w-md">
     <div class={`space-y-4 p-6 sm:p-8 md:space-y-6 transition-all duration-300 ${showError ? 'blur-md pointer-events-none' : ''}`}>
-      <form class="flex flex-col space-y-6" on:submit={handleSubmit}>
+      <form class="flex flex-col space-y-6" onsubmit={handleSubmit}>
         <h3 class="text-xl font-medium text-gray-900 dark:text-white">Register yourself</h3>
         <Label class="space-y-2">
           <span>Email</span>
@@ -127,9 +119,9 @@
           {errorDetail} 
           {btnAction} 
           {btnAction2} 
-          {icon} 
           {btnRoute} 
           {btnRoute2} 
+          {iconType} 
           close={() => {
             showError = false;
             error = '';
@@ -138,7 +130,7 @@
             btnAction2 = '';
             btnRoute = '';
             btnRoute2 = '';
-            icon = '';
+            iconType = '';
           }
         } />
       </div>

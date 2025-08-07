@@ -36,6 +36,9 @@ importers:
       flowbite-svelte-icons:
         specifier: ^2.2.1
         version: 2.2.1(svelte@5.37.3)
+      flowbite-svelte-illustrations:
+        specifier: ^1.0.4
+        version: 1.0.4(svelte@5.37.3)(tailwindcss@4.1.11)
       flowbite-typography:
         specifier: ^1.0.5
         version: 1.0.5
@@ -45,6 +48,12 @@ importers:
       svelte:
         specifier: ^5.35.5
         version: 5.37.3
+      svelte-animate:
+        specifier: ^0.6.0
+        version: 0.6.0(svelte@5.37.3)
+      svelte-animated-icons:
+        specifier: ^0.7.0
+        version: 0.7.0(svelte@5.37.3)
       svelte-kawaii:
         specifier: ^0.3.4
         version: 0.3.4(svelte@5.37.3)
@@ -882,6 +891,9 @@ packages:
     engines: {node: '>=0.4.0'}
     hasBin: true
 
+  animate.css@4.1.1:
+    resolution: {integrity: sha512-+mRmCTv6SbCmtYJCN4faJMNFVNN5EuCTTprDTAo7YzIGji2KADmakjVA3+8mVDkZ2Bf09vayB35lSQIex2+QaQ==}
+
   apexcharts@4.7.0:
     resolution: {integrity: sha512-iZSrrBGvVlL+nt2B1NpqfDuBZ9jX61X9I2+XV0hlYXHtTwhwLTHDKGXjNXAgFBDLuvSYCB/rq2nPWVPRv2DrGA==}
 
@@ -1005,6 +1017,12 @@ packages:
     resolution: {integrity: sha512-SH59319zN4TFpmvFMD7+0ETyDxez4Wyw3mgz7hkjhvrx8HawNAS3Fp7au84pZEs1gniX4hvXIg54U+4YybV2rA==}
     peerDependencies:
       svelte: ^5.0.0
+
+  flowbite-svelte-illustrations@1.0.4:
+    resolution: {integrity: sha512-KwZsov9wshWj+3hu85cQJ4xbxkp7hAzhlebRogKBTSosxbEU6muwUKvv1Sk/qTtLMIibtpI8jOBPDggM4z6NnA==}
+    peerDependencies:
+      svelte: ^5.0.0
+      tailwindcss: ^4.0.0
 
   flowbite-svelte@1.11.3:
     resolution: {integrity: sha512-9luWhmPRC5MZyX+VGdk4ql7qgNuew/X24i2HohELLA7ezz4Y3WUH9B41BjaZMziqE/0JL+58NUjofXACFRKG7g==}
@@ -1315,6 +1333,16 @@ packages:
   supports-preserve-symlinks-flag@1.0.0:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
+
+  svelte-animate@0.6.0:
+    resolution: {integrity: sha512-YP84FC9aC+h4gQAzZleQaWuiUXAFP6/USV7fOSoveyNDkGMuXC+3+Gf3sk5017SdLI2m1gNEt0fRLRW4U6XOZQ==}
+    peerDependencies:
+      svelte: ^5.0.0
+
+  svelte-animated-icons@0.7.0:
+    resolution: {integrity: sha512-1M8MZI8YLdA76c7Wy50IN0ylLDddnCWOQVPZEzPocCthu5F3+u2lRkYylwnnKSsOpuv8Sj3yXVQ40s11LrkMhw==}
+    peerDependencies:
+      svelte: ^5.0.0
 
   svelte-kawaii@0.3.4:
     resolution: {integrity: sha512-3QGTRVpItefq/QbwBHVVj5Yx0EIevJSzbHPPievWvJhhp6yApCjdbnKcUBrAqd+ljXFuSIedf5zZrgJPMLrNxA==}
@@ -2200,6 +2228,8 @@ snapshots:
 
   acorn@8.15.0: {}
 
+  animate.css@4.1.1: {}
+
   apexcharts@4.7.0:
     dependencies:
       '@svgdotjs/svg.draggable.js': 3.0.6(@svgdotjs/svg.js@3.2.4)
@@ -2325,6 +2355,11 @@ snapshots:
       clsx: 2.1.1
       svelte: 5.37.3
       tailwind-merge: 3.3.1
+
+  flowbite-svelte-illustrations@1.0.4(svelte@5.37.3)(tailwindcss@4.1.11):
+    dependencies:
+      svelte: 5.37.3
+      tailwindcss: 4.1.11
 
   flowbite-svelte@1.11.3(rollup@4.46.2)(svelte@5.37.3)(tailwindcss@4.1.11):
     dependencies:
@@ -2671,6 +2706,15 @@ snapshots:
   source-map-js@1.2.1: {}
 
   supports-preserve-symlinks-flag@1.0.0: {}
+
+  svelte-animate@0.6.0(svelte@5.37.3):
+    dependencies:
+      animate.css: 4.1.1
+      svelte: 5.37.3
+
+  svelte-animated-icons@0.7.0(svelte@5.37.3):
+    dependencies:
+      svelte: 5.37.3
 
   svelte-kawaii@0.3.4(svelte@5.37.3):
     dependencies:

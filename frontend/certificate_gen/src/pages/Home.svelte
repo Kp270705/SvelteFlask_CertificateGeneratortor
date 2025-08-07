@@ -2,6 +2,7 @@
 
   import { push } from 'svelte-spa-router';
   import { onMount } from 'svelte';
+  import { Animate } from 'svelte-animate';
 
   // importing static media files:
   import officeWorkers from "../assets/Images/Home/officeWorkers.gif";
@@ -24,12 +25,12 @@
   onMount(() => {
     const saved = localStorage.getItem("homeFormData");
       if (saved) {
-        const parsed = JSON.parse(saved);
-        eventName = parsed.eventName || '';
-        organizationName = parsed.organizationName || '';
-        certificateType = parsed.certificateType || '';
-        organizer1Desig = parsed.organizer1Desig || '';
-        organizer2Desig = parsed.organizer2Desig || '';
+        const parsed      = JSON.parse(saved);
+        eventName         =  parsed.eventName || '';
+        organizationName  =  parsed.organizationName || '';
+        certificateType   =  parsed.certificateType || '';
+        organizer1Desig   =  parsed.organizer1Desig || '';
+        organizer2Desig   =  parsed.organizer2Desig || '';
       }
   });
 
@@ -749,16 +750,21 @@
 
 <!-- ==========  PAGE CONTENT  ========== -->
 
+
+
 <div class="wrapper">
   <h1 class="main">🎓 Automated Certificate Generator</h1>
 
   <div class="main-content">
     <div class="left-column">
-      <div class="illustration">
-        <img src={officeWorkers} alt="Working office illustration" />
-      </div>
+
+        <div class="illustration">
+          <img src={officeWorkers} alt="Working office illustration" />
+        </div>
+
 
       <div class="feature-cards">
+      
         <div class="feature-card">
           <h3>Professional Excellence</h3>
           <p>Create stunning, professional certificates that leave a lasting impression. Our advanced templates are designed by experts to meet industry standards and exceed expectations.</p>

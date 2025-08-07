@@ -14,7 +14,7 @@
     import routesType from "../../config/backend_routes";
     
 
-    export let dropDownRoute;
+    export let authRoute;
 
     async function signOut(e){
         e.preventDefault();
@@ -24,6 +24,8 @@
         });
         if (response.status === 200){
             console.log('200')
+            localStorage.removeItem("jwt_token");
+            authRoute = "Sign-In"
             push('/login')
         }
         } catch(err){
@@ -32,7 +34,7 @@
     }
 
     function handleClick(e) {
-    if (dropDownRoute === "Sign-Out") {
+    if (authRoute === "Sign-Out") {
       signOut(e);
     } else {
       push('/login');
@@ -50,7 +52,7 @@
         onclick={handleClick}
         class="w-full text-white bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-orange-500 dark:hover:bg-orange-600 dark:focus:ring-orange-800"
         >
-        {dropDownRoute}
+        {authRoute}
         </Button>
     </DropdownItem>
     </Dropdown>

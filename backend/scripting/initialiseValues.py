@@ -2,13 +2,13 @@ import random
 
     
 time_value  =  None  # Random time value between 1 and 60
-time_unit   =  random.choice(["seconds", "minutes"])
+time_unit   =  random.choice(["seconds",])
 # time_unit   =  random.choice(["seconds", "minutes", "hours", "days"]) # time units for longer duration jwt tokens:
 
 if time_unit == "seconds":
-    time_value = random.randint(10, 60)
-elif time_unit == "minutes":
-    time_value = random.randint(1, 3)
+    time_value = random.randint(30, 60)
+# elif time_unit == "minutes":
+#     time_value = random.randint(1, 3)
 
 # ==========================================
 # # Below for longer duration jwt tokens:

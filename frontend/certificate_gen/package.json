@@ -17,9 +17,12 @@
     "flowbite-svelte": "^1.11.3",
     "flowbite-svelte-blocks": "^2.1.0",
     "flowbite-svelte-icons": "^2.2.1",
+    "flowbite-svelte-illustrations": "^1.0.4",
     "flowbite-typography": "^1.0.5",
     "lowlight": "^3.3.0",
     "svelte": "^5.35.5",
+    "svelte-animate": "^0.6.0",
+    "svelte-animated-icons": "^0.7.0",
     "svelte-kawaii": "^0.3.4",
     "tailwindcss": "^4.0.0",
     "vite": "^7.0.4"

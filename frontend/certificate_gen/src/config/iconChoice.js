@@ -1,4 +1,6 @@
 
-let myIcon = "image"
+// 'illustrations' or 'any'
+
+let myIcon = "illustrations"
 
 export default myIcon;

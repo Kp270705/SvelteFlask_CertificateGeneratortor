@@ -1,5 +1,5 @@
 from flask import Blueprint, make_response, jsonify, session, request, redirect, make_response
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, jwt_required
 from urllib.parse import urlencode
 from werkzeug.security import generate_password_hash, check_password_hash
 
@@ -59,7 +59,6 @@ def login():
     if check_password_hash(user.password, password):
         access_token = create_access_token(identity=str(user.id))
         session['jwt_token'] = access_token
-        print(f"\n\nIn login, token is stored.\n{session['jwt_token']}")
         return {
             'message': "✌️🥳 Login Successfully",
             'description': "✌️🥳 User Login successfully.",
@@ -77,20 +76,12 @@ def login():
 @auth_bp.route("/logout")
 def logout():
     if not session:
-        print(f"session already cleared.")
+        print(f"Logout and session already cleared.")
+        return jsonify({"message": "Already logged out."}), 202
     session.clear()
+    print(f"session cleared now.")
     return jsonify({"message": "Logged out successfully"}), 200
 
-
-
-# used to send the JWT token to the frontend
-@auth_bp.route("/token")
-def send_token_to_frontend():
-    jwt_token = session.get("jwt_token", "No-Token")
-    print(f"\n\nIn token and our token is:\n{jwt_token}")
-    if jwt_token == "No-Token":
-        return jsonify({"message": "No-Token"}), 401
-    return jsonify({"jwt_token": jwt_token}), 200
 
 
 # use to fetch profile information
@@ -116,5 +107,6 @@ def profile():
 
 
 # =========================================================
+
 
 
