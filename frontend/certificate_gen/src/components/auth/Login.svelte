@@ -3,6 +3,7 @@
 <script>
   // import static files:
   import routesType from "../../config/backend_routes.js";
+  import { authRoute } from "../../stores/authStore.js";
   
   // import sv-ui essentials
   import { Card, Button, Label, Input, Checkbox } from "flowbite-svelte";

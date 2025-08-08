@@ -1,26 +1,28 @@
 
 <script>
-  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, DarkMode } from "flowbite-svelte";
+  import { Navbar, NavBrand, NavLi, NavUl, NavHamburger, Popover, Avatar } from "flowbite-svelte";
   import { link } from 'svelte-spa-router';
   import { onMount } from 'svelte';
   import { UserCircleHero } from 'svelte-animated-icons';
+  import { Tooltip, Button } from "flowbite-svelte";
+  import { blur } from "svelte/transition";
+
 
   // importing components: 
   import Darkmode from "../../components/Darkmode/Darkmode.svelte";
   import NavDropdown from "../Dropdown/NavDropdown.svelte";
+  import UserDetails from "../popover/UserDetails.svelte";
 
   // import static content
   import CertGen from "../../assets/icons/certGen3.png";
   import routesType from "../../config/backend_routes";
+  import { isAuthorized, authRoute  } from "../../stores/authStore";
 
   let pages = [
     { name: "Home", path: "/home" },
     { name: "About", path: "/about" },
     { name: "Register", path: "/register" }
   ];
-
-  let isAuthorized = $state(false);
-  let authRoute = $state('Sign-In');
 
   const AuthErrors = {
     TOKEN_EXPIRED: 401,
@@ -34,36 +36,33 @@
       const res = await fetch(`${routesType.current_route}/resources/token`, {
         headers: (token ? { Authorization: `Bearer ${token}` } : {})
       });
-
       const data = await res.json();
 
       if (res.status === 401) {
         console.warn(`❌ Token expired or missing.\n\tError: ${data.error}`);
-        isAuthorized = false;
-        authRoute = "Sign-In";
+        isAuthorized.set(false);
+        authRoute.set("Sign-In");
       } 
 
       // this error not occurs usually(for advanced backend)
       else if (res.status === 422) {
         console.warn(`❌ Invalid token (possibly signed out).\n\tError: ${data.error}`);
-        isAuthorized = false;
-        authRoute = "Sign-In";
+        isAuthorized.set(false);
+        authRoute.set("Sign-In");
       }
 
       else {
-        isAuthorized = true;
         console.log(`✅ ✅ User authenticated.\n\tUser-Id: ${data.user_id}`)
-        authRoute = "Sign-Out"
+        isAuthorized.set(true);
+        authRoute.set("Sign-Out");
+        // window.location.reload
       }
-      // authRoute = isAuthorized ? "Sign-Out" : ;"Sign-In"
 
     } catch (err) {
       console.error("Token check failed", err);
     }
   });
 </script>
-
-
 
 
 <Navbar>
@@ -81,16 +80,17 @@
       </NavLi>
     {/each}
     <NavLi>
-        <NavDropdown {authRoute} />
+        <NavDropdown authRoute={$authRoute} />
     </NavLi>
     <NavLi class="mx-5">
       <Darkmode />
     </NavLi>
-    {#if isAuthorized}
+    {#if $isAuthorized }
     <NavLi class="mx-5">
       <UserCircleHero
         size={40}
         color="#c9cc2e" />
+        <UserDetails />
     </NavLi>
     {/if}
   </NavUl>

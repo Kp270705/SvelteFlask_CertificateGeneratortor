@@ -4,8 +4,8 @@ from urllib.parse import urlencode
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
-from models.models import User
-from initResources.db import db
+from flask_jwt_extended import jwt_required, get_jwt_identity
+from models.models import db, User, UserDetails
 from scripting.initialiseValues import jwt_time_period as jwt_period
 
 
@@ -37,6 +37,44 @@ def register():
         'message': "🥳 Registration successful",
         'description': "🥳 User registered successfully."
     }, 200
+
+
+# update user's data: 
+@auth_bp.route('/update-profile', methods=['POST'])
+@jwt_required()
+def update_profile():
+    print(f"\n\nIn updating user info...")
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    if not user:
+        return jsonify({"message": "User not found."}), 404
+
+    data = request.get_json()
+    user_details = UserDetails.query.filter_by(user_id=current_user_id).first()
+
+    if not user_details:
+        user_details = UserDetails(user_id=current_user_id)
+        db.session.add(user_details)
+
+    # Optional update of provided fields
+    for field in ['userName', 'userHobbies', 'socialMediaLink']:
+        if field in data:
+            setattr(user_details, field, data[field])
+    print(data["userName"])
+    print(data["userHobbies"])
+    print(data["socialMediaLink"])
+
+    db.session.commit()
+
+    return jsonify({
+        "message": "✅ Profile updated",
+        "details": {
+            "userName": user_details.userName,
+            "userHobbies": user_details.userHobbies,
+            "socialMediaLink": user_details.socialMediaLink,
+        }
+    }), 200
 
 
 # Login route:
@@ -72,6 +110,7 @@ def login():
     }, 401
 
 
+
 # used for logging out the user
 @auth_bp.route("/logout")
 def logout():
@@ -84,27 +123,26 @@ def logout():
 
 
 
-# use to fetch profile information
-@auth_bp.route("/profile")
-def profile():
-    print(f"\n\n\tIn Profile route\n Name in session : {session.get('name', 'No name in session')}")
-    if "name" not in session:
-        return jsonify({"error": "Unauthorized"}), 401
+# used to send user profile data: 
+@auth_bp.route('/get-profile')
+@jwt_required()
+def get_profile():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
 
-    # handling 's' in time period: 
-    jwt_time_period = jwt_period 
-    parts = jwt_time_period.split()  
-    if parts[0] == "1":
-        parts[1] = parts[1][:-1]
-    jwt_time_period = " ".join(parts)
+    if not user:
+        return jsonify({"message": "User not found"}), 404
 
-    return jsonify(
-        {
-            "email": session.get("email", "No email found in session"),
-            "jwt_time_period": jwt_time_period,
+    details = user.details
+
+    return jsonify({
+        "userEmail": user.email,
+        "profile": {
+            "userName": details.userName if details else "Jese Leos",
+            "userHobbies": details.userHobbies if details else "@jeseleos",
+            "socialMediaLink": details.socialMediaLink if details else "Open-source contributor.",
         }
-    )
-
+    }), 200
 
 # =========================================================
 

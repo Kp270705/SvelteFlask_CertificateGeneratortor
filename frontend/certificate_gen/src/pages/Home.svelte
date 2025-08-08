@@ -54,6 +54,7 @@
 
     const form = e.target;
     const formData = new FormData(form);
+    
     // Append action value:
     if (clickedAction) {
       formData.append("action", clickedAction);

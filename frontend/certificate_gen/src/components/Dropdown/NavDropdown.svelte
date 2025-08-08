@@ -1,7 +1,15 @@
 <script>
     // import svelte-flowbite essentials
-    import { Button, Dropdown, DropdownItem } from "flowbite-svelte";
+    import { Button, Modal, P, Dropdown, DropdownItem } from "flowbite-svelte";
     import { ChevronDownOutline } from "flowbite-svelte-icons";
+    import { ExclamationCircleOutline } from "flowbite-svelte-icons";
+    import { slide } from "svelte/transition";
+
+    let popupModal = $state(false);
+
+    import { Drawer, CloseButton, Label, Input, Textarea } from "flowbite-svelte";
+    import { InfoCircleSolid, UserAddOutline, CalendarEditSolid } from "flowbite-svelte-icons";
+
 
     // import svelte essentials
 	import { push } from 'svelte-spa-router';
@@ -14,7 +22,8 @@
     import routesType from "../../config/backend_routes";
     
 
-    export let authRoute;
+    // export let authRoute;
+    let {authRoute} = $props()
 
     async function signOut(e){
         e.preventDefault();
@@ -48,12 +57,20 @@
     <ChevronDownOutline class="ms-2 h-6 w-6 text-black dark:text-white" />
     <Dropdown simple>
     <DropdownItem>
-        <Button
-        onclick={handleClick}
-        class="w-full text-white bg-orange-600 hover:bg-orange-700 focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-4 py-2 text-center dark:bg-orange-500 dark:hover:bg-orange-600 dark:focus:ring-orange-800"
-        >
+        <Button onclick={() => (popupModal = true)}>
         {authRoute}
         </Button>
+        <Modal form bind:open={popupModal} size="xs" transition={slide} permanent>
+        <div class="text-center">
+            <ExclamationCircleOutline class="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200" />
+            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this product?</h3>
+            <div class="space-x-2">
+            <Button type="submit" value="yes" color="red" onclick={handleClick} >Yes, I'm sure</Button>
+            <Button type="submit" value="no" color="alternative">No, cancel</Button>
+            </div>
+        </div>
+        </Modal>
+            
     </DropdownItem>
     </Dropdown>
 </div>
